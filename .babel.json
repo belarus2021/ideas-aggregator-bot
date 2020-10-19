@@ -1,0 +1,1634 @@
+{
+  "{\"filename\":\"/app/server.js\",\"env\":{},\"retainLines\":false,\"highlightCode\":true,\"suppressDeprecationMessages\":false,\"presets\":[],\"plugins\":[[[],null],[[],null],[[],null],[[],{\"loose\":false,\"spec\":false}],[[],null],[[],null],[[],{\"spec\":false}],[[],null],[[],{\"loose\":false}],[[],null],[[],null],[[],null],[[],{\"loose\":false}],[[],{\"loose\":false}],[[],null],[[],null],[[],null],[[],{\"loose\":false}],[[],null],[[],{\"loose\":false}],[[],null],[[],null],[[],{\"loose\":false}],[[],{\"async\":false,\"asyncGenerators\":false}]],\"ignore\":[],\"code\":true,\"metadata\":true,\"ast\":true,\"comments\":true,\"compact\":\"auto\",\"minified\":false,\"sourceRoot\":\"/app\",\"babelrc\":true,\"sourceType\":\"module\",\"moduleIds\":false,\"passPerPreset\":false,\"parserOpts\":false,\"generatorOpts\":false}:6.26.3": {
+    "metadata": {
+      "usedHelpers": [
+        "asyncToGenerator",
+        "interopRequireDefault"
+      ],
+      "marked": [],
+      "modules": {
+        "imports": [
+          {
+            "source": "express",
+            "imported": [
+              "default"
+            ],
+            "specifiers": [
+              {
+                "kind": "named",
+                "imported": "default",
+                "local": "express"
+              }
+            ]
+          },
+          {
+            "source": "./helpers/telegramHelper",
+            "imported": [
+              "processTelegramUser"
+            ],
+            "specifiers": [
+              {
+                "kind": "named",
+                "imported": "processTelegramUser",
+                "local": "processTelegramUser"
+              }
+            ]
+          },
+          {
+            "source": "./helpers/firebaseHelper",
+            "imported": [
+              "storeUser"
+            ],
+            "specifiers": [
+              {
+                "kind": "named",
+                "imported": "storeUser",
+                "local": "storeUser"
+              }
+            ]
+          }
+        ],
+        "exports": {
+          "exported": [],
+          "specifiers": []
+        }
+      }
+    },
+    "options": {
+      "filename": "/app/server.js",
+      "filenameRelative": "/app/server.js",
+      "env": {},
+      "retainLines": false,
+      "highlightCode": true,
+      "suppressDeprecationMessages": false,
+      "presets": [],
+      "plugins": [
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          {
+            "loose": false,
+            "spec": false
+          }
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          {
+            "spec": false
+          }
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          {
+            "loose": false
+          }
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          {
+            "loose": false
+          }
+        ],
+        [
+          [],
+          {
+            "loose": false
+          }
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          {
+            "loose": false
+          }
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          {
+            "loose": false
+          }
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          {
+            "loose": false
+          }
+        ],
+        [
+          [],
+          {
+            "async": false,
+            "asyncGenerators": false
+          }
+        ]
+      ],
+      "ignore": [],
+      "code": true,
+      "metadata": true,
+      "ast": false,
+      "comments": true,
+      "compact": "auto",
+      "minified": false,
+      "sourceMaps": "both",
+      "sourceMapTarget": "server.js",
+      "sourceFileName": "server.js",
+      "sourceRoot": "/app",
+      "babelrc": false,
+      "sourceType": "module",
+      "moduleRoot": "/app",
+      "moduleIds": false,
+      "passPerPreset": false,
+      "parserOpts": false,
+      "generatorOpts": false,
+      "basename": "server"
+    },
+    "ignored": false,
+    "code": "'use strict';\n\nvar _express = require('express');\n\nvar _express2 = _interopRequireDefault(_express);\n\nvar _telegramHelper = require('./helpers/telegramHelper');\n\nvar _firebaseHelper = require('./helpers/firebaseHelper');\n\nfunction _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }\n\nfunction _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step(\"next\", value); }, function (err) { step(\"throw\", err); }); } } return step(\"next\"); }); }; } // server.js\n// where your node app starts\n\n// we've started you off with Express (https://expressjs.com/)\n// but feel free to use whatever libraries or frameworks you'd like through `package.json`.\n\n\n// our default array of dreams\nvar dreams = [\"Find and count some sheep\", \"Climb a really tall mountain\", \"Wash the dishes\"];\n\nvar app = (0, _express2.default)();\n\n// make all the files in 'public' available\n// https://expressjs.com/en/starter/static-files.html\napp.use(_express2.default.static(\"public\"));\n\n// https://expressjs.com/en/starter/basic-routing.html\napp.get(\"/\", function (request, response) {\n  response.sendFile(__dirname + \"/views/index.html\");\n});\n\n// send the default array of dreams to the webpage\napp.get(\"/dreams\", function (request, response) {\n  // express helps us take JS objects and send them as JSON\n  response.json(dreams);\n});\n\n// listen for requests :)\nvar listener = app.listen(process.env.PORT, function () {\n  console.log(\"Your app is listening on port \" + listener.address().port);\n});\n\nvar _require = require('telegraf'),\n    Telegraf = _require.Telegraf;\n\nvar bot = new Telegraf(process.env.TELEGRAM_API_KEY);\n\nbot.start(function () {\n  var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(ctx) {\n    var user, processedUser;\n    return regeneratorRuntime.wrap(function _callee$(_context) {\n      while (1) {\n        switch (_context.prev = _context.next) {\n          case 0:\n            user = ctx.update.message.from;\n            processedUser = (0, _telegramHelper.processTelegramUser)(user);\n\n            if (!processedUser.isBot) {\n              (0, _firebaseHelper.storeUser)(user);\n            }\n            ctx.reply('Привет');\n\n          case 4:\n          case 'end':\n            return _context.stop();\n        }\n      }\n    }, _callee, undefined);\n  }));\n\n  return function (_x) {\n    return _ref.apply(this, arguments);\n  };\n}());\nbot.help(function (ctx) {\n  return ctx.reply('Send me a sticker');\n});\nbot.on('sticker', function (ctx) {\n  return ctx.reply('👍');\n});\nbot.hears('hi', function (ctx) {\n  return ctx.reply('Hey there');\n});\nbot.launch();\n//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNlcnZlci5qcyJdLCJuYW1lcyI6WyJkcmVhbXMiLCJhcHAiLCJ1c2UiLCJleHByZXNzIiwic3RhdGljIiwiZ2V0IiwicmVxdWVzdCIsInJlc3BvbnNlIiwic2VuZEZpbGUiLCJfX2Rpcm5hbWUiLCJqc29uIiwibGlzdGVuZXIiLCJsaXN0ZW4iLCJwcm9jZXNzIiwiZW52IiwiUE9SVCIsImNvbnNvbGUiLCJsb2ciLCJhZGRyZXNzIiwicG9ydCIsInJlcXVpcmUiLCJUZWxlZ3JhZiIsImJvdCIsIlRFTEVHUkFNX0FQSV9LRVkiLCJzdGFydCIsImN0eCIsInVzZXIiLCJ1cGRhdGUiLCJtZXNzYWdlIiwiZnJvbSIsInByb2Nlc3NlZFVzZXIiLCJpc0JvdCIsInJlcGx5IiwiaGVscCIsIm9uIiwiaGVhcnMiLCJsYXVuY2giXSwibWFwcGluZ3MiOiI7O0FBS0E7Ozs7QUFDQTs7QUFDQTs7OzsyY0FQQTtBQUNBOztBQUVBO0FBQ0E7OztBQUlBO0FBQ0EsSUFBTUEsU0FBUyxDQUNiLDJCQURhLEVBRWIsOEJBRmEsRUFHYixpQkFIYSxDQUFmOztBQU1BLElBQU1DLE1BQU0sd0JBQVo7O0FBRUE7QUFDQTtBQUNBQSxJQUFJQyxHQUFKLENBQVFDLGtCQUFRQyxNQUFSLENBQWUsUUFBZixDQUFSOztBQUVBO0FBQ0FILElBQUlJLEdBQUosQ0FBUSxHQUFSLEVBQWEsVUFBQ0MsT0FBRCxFQUFVQyxRQUFWLEVBQXVCO0FBQ2xDQSxXQUFTQyxRQUFULENBQWtCQyxZQUFZLG1CQUE5QjtBQUNELENBRkQ7O0FBSUE7QUFDQVIsSUFBSUksR0FBSixDQUFRLFNBQVIsRUFBbUIsVUFBQ0MsT0FBRCxFQUFVQyxRQUFWLEVBQXVCO0FBQ3hDO0FBQ0FBLFdBQVNHLElBQVQsQ0FBY1YsTUFBZDtBQUNELENBSEQ7O0FBS0E7QUFDQSxJQUFNVyxXQUFXVixJQUFJVyxNQUFKLENBQVdDLFFBQVFDLEdBQVIsQ0FBWUMsSUFBdkIsRUFBNkIsWUFBTTtBQUNsREMsVUFBUUMsR0FBUixDQUFZLG1DQUFtQ04sU0FBU08sT0FBVCxHQUFtQkMsSUFBbEU7QUFDRCxDQUZnQixDQUFqQjs7ZUFJcUJDLFFBQVEsVUFBUixDO0lBQWJDLFEsWUFBQUEsUTs7QUFDUixJQUFNQyxNQUFNLElBQUlELFFBQUosQ0FBYVIsUUFBUUMsR0FBUixDQUFZUyxnQkFBekIsQ0FBWjs7QUFFQUQsSUFBSUUsS0FBSjtBQUFBLHFFQUFVLGlCQUFPQyxHQUFQO0FBQUE7QUFBQTtBQUFBO0FBQUE7QUFBQTtBQUNGQyxnQkFERSxHQUNLRCxJQUFJRSxNQUFKLENBQVdDLE9BQVgsQ0FBbUJDLElBRHhCO0FBRUZDLHlCQUZFLEdBRWMseUNBQW9CSixJQUFwQixDQUZkOztBQUdSLGdCQUFJLENBQUNJLGNBQWNDLEtBQW5CLEVBQTBCO0FBQ3hCLDZDQUFVTCxJQUFWO0FBQ0Q7QUFDREQsZ0JBQUlPLEtBQUosQ0FBVSxRQUFWOztBQU5RO0FBQUE7QUFBQTtBQUFBO0FBQUE7QUFBQTtBQUFBLEdBQVY7O0FBQUE7QUFBQTtBQUFBO0FBQUE7QUFRQVYsSUFBSVcsSUFBSixDQUFTLFVBQUNSLEdBQUQ7QUFBQSxTQUFTQSxJQUFJTyxLQUFKLENBQVUsbUJBQVYsQ0FBVDtBQUFBLENBQVQ7QUFDQVYsSUFBSVksRUFBSixDQUFPLFNBQVAsRUFBa0IsVUFBQ1QsR0FBRDtBQUFBLFNBQVNBLElBQUlPLEtBQUosQ0FBVSxJQUFWLENBQVQ7QUFBQSxDQUFsQjtBQUNBVixJQUFJYSxLQUFKLENBQVUsSUFBVixFQUFnQixVQUFDVixHQUFEO0FBQUEsU0FBU0EsSUFBSU8sS0FBSixDQUFVLFdBQVYsQ0FBVDtBQUFBLENBQWhCO0FBQ0FWLElBQUljLE1BQUoiLCJmaWxlIjoic2VydmVyLmpzIiwic291cmNlUm9vdCI6Ii9hcHAiLCJzb3VyY2VzQ29udGVudCI6WyIvLyBzZXJ2ZXIuanNcbi8vIHdoZXJlIHlvdXIgbm9kZSBhcHAgc3RhcnRzXG5cbi8vIHdlJ3ZlIHN0YXJ0ZWQgeW91IG9mZiB3aXRoIEV4cHJlc3MgKGh0dHBzOi8vZXhwcmVzc2pzLmNvbS8pXG4vLyBidXQgZmVlbCBmcmVlIHRvIHVzZSB3aGF0ZXZlciBsaWJyYXJpZXMgb3IgZnJhbWV3b3JrcyB5b3UnZCBsaWtlIHRocm91Z2ggYHBhY2thZ2UuanNvbmAuXG5pbXBvcnQgZXhwcmVzcyBmcm9tIFwiZXhwcmVzc1wiO1xuaW1wb3J0IHtwcm9jZXNzVGVsZWdyYW1Vc2VyfSBmcm9tICcuL2hlbHBlcnMvdGVsZWdyYW1IZWxwZXInO1xuaW1wb3J0IHtzdG9yZVVzZXJ9IGZyb20gJy4vaGVscGVycy9maXJlYmFzZUhlbHBlcic7XG4vLyBvdXIgZGVmYXVsdCBhcnJheSBvZiBkcmVhbXNcbmNvbnN0IGRyZWFtcyA9IFtcbiAgXCJGaW5kIGFuZCBjb3VudCBzb21lIHNoZWVwXCIsXG4gIFwiQ2xpbWIgYSByZWFsbHkgdGFsbCBtb3VudGFpblwiLFxuICBcIldhc2ggdGhlIGRpc2hlc1wiXG5dO1xuXG5jb25zdCBhcHAgPSBleHByZXNzKCk7XG5cbi8vIG1ha2UgYWxsIHRoZSBmaWxlcyBpbiAncHVibGljJyBhdmFpbGFibGVcbi8vIGh0dHBzOi8vZXhwcmVzc2pzLmNvbS9lbi9zdGFydGVyL3N0YXRpYy1maWxlcy5odG1sXG5hcHAudXNlKGV4cHJlc3Muc3RhdGljKFwicHVibGljXCIpKTtcblxuLy8gaHR0cHM6Ly9leHByZXNzanMuY29tL2VuL3N0YXJ0ZXIvYmFzaWMtcm91dGluZy5odG1sXG5hcHAuZ2V0KFwiL1wiLCAocmVxdWVzdCwgcmVzcG9uc2UpID0+IHtcbiAgcmVzcG9uc2Uuc2VuZEZpbGUoX19kaXJuYW1lICsgXCIvdmlld3MvaW5kZXguaHRtbFwiKTtcbn0pO1xuXG4vLyBzZW5kIHRoZSBkZWZhdWx0IGFycmF5IG9mIGRyZWFtcyB0byB0aGUgd2VicGFnZVxuYXBwLmdldChcIi9kcmVhbXNcIiwgKHJlcXVlc3QsIHJlc3BvbnNlKSA9PiB7XG4gIC8vIGV4cHJlc3MgaGVscHMgdXMgdGFrZSBKUyBvYmplY3RzIGFuZCBzZW5kIHRoZW0gYXMgSlNPTlxuICByZXNwb25zZS5qc29uKGRyZWFtcyk7XG59KTtcblxuLy8gbGlzdGVuIGZvciByZXF1ZXN0cyA6KVxuY29uc3QgbGlzdGVuZXIgPSBhcHAubGlzdGVuKHByb2Nlc3MuZW52LlBPUlQsICgpID0+IHtcbiAgY29uc29sZS5sb2coXCJZb3VyIGFwcCBpcyBsaXN0ZW5pbmcgb24gcG9ydCBcIiArIGxpc3RlbmVyLmFkZHJlc3MoKS5wb3J0KTtcbn0pO1xuXG5jb25zdCB7IFRlbGVncmFmIH0gPSByZXF1aXJlKCd0ZWxlZ3JhZicpXG5jb25zdCBib3QgPSBuZXcgVGVsZWdyYWYocHJvY2Vzcy5lbnYuVEVMRUdSQU1fQVBJX0tFWSlcblxuYm90LnN0YXJ0KGFzeW5jIChjdHgpID0+IHtcbiAgY29uc3QgdXNlciA9IGN0eC51cGRhdGUubWVzc2FnZS5mcm9tO1xuICBjb25zdCBwcm9jZXNzZWRVc2VyID0gcHJvY2Vzc1RlbGVncmFtVXNlcih1c2VyKTtcbiAgaWYgKCFwcm9jZXNzZWRVc2VyLmlzQm90KSB7XG4gICAgc3RvcmVVc2VyKHVzZXIpXG4gIH1cbiAgY3R4LnJlcGx5KCfQn9GA0LjQstC10YInKVxufSlcbmJvdC5oZWxwKChjdHgpID0+IGN0eC5yZXBseSgnU2VuZCBtZSBhIHN0aWNrZXInKSlcbmJvdC5vbignc3RpY2tlcicsIChjdHgpID0+IGN0eC5yZXBseSgn8J+RjScpKVxuYm90LmhlYXJzKCdoaScsIChjdHgpID0+IGN0eC5yZXBseSgnSGV5IHRoZXJlJykpXG5ib3QubGF1bmNoKCkiXX0=",
+    "ast": null,
+    "map": {
+      "version": 3,
+      "sources": [
+        "server.js"
+      ],
+      "names": [
+        "dreams",
+        "app",
+        "use",
+        "express",
+        "static",
+        "get",
+        "request",
+        "response",
+        "sendFile",
+        "__dirname",
+        "json",
+        "listener",
+        "listen",
+        "process",
+        "env",
+        "PORT",
+        "console",
+        "log",
+        "address",
+        "port",
+        "require",
+        "Telegraf",
+        "bot",
+        "TELEGRAM_API_KEY",
+        "start",
+        "ctx",
+        "user",
+        "update",
+        "message",
+        "from",
+        "processedUser",
+        "isBot",
+        "reply",
+        "help",
+        "on",
+        "hears",
+        "launch"
+      ],
+      "mappings": ";;AAKA;;;;AACA;;AACA;;;;2cAPA;AACA;;AAEA;AACA;;;AAIA;AACA,IAAMA,SAAS,CACb,2BADa,EAEb,8BAFa,EAGb,iBAHa,CAAf;;AAMA,IAAMC,MAAM,wBAAZ;;AAEA;AACA;AACAA,IAAIC,GAAJ,CAAQC,kBAAQC,MAAR,CAAe,QAAf,CAAR;;AAEA;AACAH,IAAII,GAAJ,CAAQ,GAAR,EAAa,UAACC,OAAD,EAAUC,QAAV,EAAuB;AAClCA,WAASC,QAAT,CAAkBC,YAAY,mBAA9B;AACD,CAFD;;AAIA;AACAR,IAAII,GAAJ,CAAQ,SAAR,EAAmB,UAACC,OAAD,EAAUC,QAAV,EAAuB;AACxC;AACAA,WAASG,IAAT,CAAcV,MAAd;AACD,CAHD;;AAKA;AACA,IAAMW,WAAWV,IAAIW,MAAJ,CAAWC,QAAQC,GAAR,CAAYC,IAAvB,EAA6B,YAAM;AAClDC,UAAQC,GAAR,CAAY,mCAAmCN,SAASO,OAAT,GAAmBC,IAAlE;AACD,CAFgB,CAAjB;;eAIqBC,QAAQ,UAAR,C;IAAbC,Q,YAAAA,Q;;AACR,IAAMC,MAAM,IAAID,QAAJ,CAAaR,QAAQC,GAAR,CAAYS,gBAAzB,CAAZ;;AAEAD,IAAIE,KAAJ;AAAA,qEAAU,iBAAOC,GAAP;AAAA;AAAA;AAAA;AAAA;AAAA;AACFC,gBADE,GACKD,IAAIE,MAAJ,CAAWC,OAAX,CAAmBC,IADxB;AAEFC,yBAFE,GAEc,yCAAoBJ,IAApB,CAFd;;AAGR,gBAAI,CAACI,cAAcC,KAAnB,EAA0B;AACxB,6CAAUL,IAAV;AACD;AACDD,gBAAIO,KAAJ,CAAU,QAAV;;AANQ;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA,GAAV;;AAAA;AAAA;AAAA;AAAA;AAQAV,IAAIW,IAAJ,CAAS,UAACR,GAAD;AAAA,SAASA,IAAIO,KAAJ,CAAU,mBAAV,CAAT;AAAA,CAAT;AACAV,IAAIY,EAAJ,CAAO,SAAP,EAAkB,UAACT,GAAD;AAAA,SAASA,IAAIO,KAAJ,CAAU,IAAV,CAAT;AAAA,CAAlB;AACAV,IAAIa,KAAJ,CAAU,IAAV,EAAgB,UAACV,GAAD;AAAA,SAASA,IAAIO,KAAJ,CAAU,WAAV,CAAT;AAAA,CAAhB;AACAV,IAAIc,MAAJ",
+      "file": "server.js",
+      "sourceRoot": "/app",
+      "sourcesContent": [
+        "// server.js\n// where your node app starts\n\n// we've started you off with Express (https://expressjs.com/)\n// but feel free to use whatever libraries or frameworks you'd like through `package.json`.\nimport express from \"express\";\nimport {processTelegramUser} from './helpers/telegramHelper';\nimport {storeUser} from './helpers/firebaseHelper';\n// our default array of dreams\nconst dreams = [\n  \"Find and count some sheep\",\n  \"Climb a really tall mountain\",\n  \"Wash the dishes\"\n];\n\nconst app = express();\n\n// make all the files in 'public' available\n// https://expressjs.com/en/starter/static-files.html\napp.use(express.static(\"public\"));\n\n// https://expressjs.com/en/starter/basic-routing.html\napp.get(\"/\", (request, response) => {\n  response.sendFile(__dirname + \"/views/index.html\");\n});\n\n// send the default array of dreams to the webpage\napp.get(\"/dreams\", (request, response) => {\n  // express helps us take JS objects and send them as JSON\n  response.json(dreams);\n});\n\n// listen for requests :)\nconst listener = app.listen(process.env.PORT, () => {\n  console.log(\"Your app is listening on port \" + listener.address().port);\n});\n\nconst { Telegraf } = require('telegraf')\nconst bot = new Telegraf(process.env.TELEGRAM_API_KEY)\n\nbot.start(async (ctx) => {\n  const user = ctx.update.message.from;\n  const processedUser = processTelegramUser(user);\n  if (!processedUser.isBot) {\n    storeUser(user)\n  }\n  ctx.reply('Привет')\n})\nbot.help((ctx) => ctx.reply('Send me a sticker'))\nbot.on('sticker', (ctx) => ctx.reply('👍'))\nbot.hears('hi', (ctx) => ctx.reply('Hey there'))\nbot.launch()"
+      ]
+    },
+    "mtime": 1599456153000
+  },
+  "{\"filename\":\"/app/helpers/telegramHelper.js\",\"env\":{},\"retainLines\":false,\"highlightCode\":true,\"suppressDeprecationMessages\":false,\"presets\":[],\"plugins\":[[[],null],[[],null],[[],null],[[],{\"loose\":false,\"spec\":false}],[[],null],[[],null],[[],{\"spec\":false}],[[],null],[[],{\"loose\":false}],[[],null],[[],null],[[],null],[[],{\"loose\":false}],[[],{\"loose\":false}],[[],null],[[],null],[[],null],[[],{\"loose\":false}],[[],null],[[],{\"loose\":false}],[[],null],[[],null],[[],{\"loose\":false}],[[],{\"async\":false,\"asyncGenerators\":false}]],\"ignore\":[],\"code\":true,\"metadata\":true,\"ast\":true,\"comments\":true,\"compact\":\"auto\",\"minified\":false,\"sourceRoot\":\"/app/helpers\",\"babelrc\":true,\"sourceType\":\"module\",\"moduleIds\":false,\"passPerPreset\":false,\"parserOpts\":false,\"generatorOpts\":false}:6.26.3": {
+    "metadata": {
+      "usedHelpers": [],
+      "marked": [],
+      "modules": {
+        "imports": [],
+        "exports": {
+          "exported": [
+            "processTelegramUser",
+            "user"
+          ],
+          "specifiers": [
+            {
+              "kind": "local",
+              "local": "processTelegramUser",
+              "exported": "processTelegramUser"
+            },
+            {
+              "kind": "local",
+              "local": "user",
+              "exported": "user"
+            }
+          ]
+        }
+      }
+    },
+    "options": {
+      "filename": "/app/helpers/telegramHelper.js",
+      "filenameRelative": "/app/helpers/telegramHelper.js",
+      "env": {},
+      "retainLines": false,
+      "highlightCode": true,
+      "suppressDeprecationMessages": false,
+      "presets": [],
+      "plugins": [
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          {
+            "loose": false,
+            "spec": false
+          }
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          {
+            "spec": false
+          }
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          {
+            "loose": false
+          }
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          {
+            "loose": false
+          }
+        ],
+        [
+          [],
+          {
+            "loose": false
+          }
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          {
+            "loose": false
+          }
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          {
+            "loose": false
+          }
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          {
+            "loose": false
+          }
+        ],
+        [
+          [],
+          {
+            "async": false,
+            "asyncGenerators": false
+          }
+        ]
+      ],
+      "ignore": [],
+      "code": true,
+      "metadata": true,
+      "ast": false,
+      "comments": true,
+      "compact": "auto",
+      "minified": false,
+      "sourceMaps": "both",
+      "sourceMapTarget": "telegramHelper.js",
+      "sourceFileName": "telegramHelper.js",
+      "sourceRoot": "/app/helpers",
+      "babelrc": false,
+      "sourceType": "module",
+      "moduleRoot": "/app/helpers",
+      "moduleIds": false,
+      "passPerPreset": false,
+      "parserOpts": false,
+      "generatorOpts": false,
+      "basename": "telegramHelper"
+    },
+    "ignored": false,
+    "code": "\"use strict\";\n\nObject.defineProperty(exports, \"__esModule\", {\n  value: true\n});\nexports.processTelegramUser = processTelegramUser;\nfunction processTelegramUser(user) {\n  return {\n    id: user.id,\n    isBot: user.is_bot,\n    firstName: user.first_name,\n    lastName: user.last_name,\n    username: user.username,\n    langCode: user.language_code\n  };\n}\n//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInRlbGVncmFtSGVscGVyLmpzIl0sIm5hbWVzIjpbInByb2Nlc3NUZWxlZ3JhbVVzZXIiLCJ1c2VyIiwiaWQiLCJpc0JvdCIsImlzX2JvdCIsImZpcnN0TmFtZSIsImZpcnN0X25hbWUiLCJsYXN0TmFtZSIsImxhc3RfbmFtZSIsInVzZXJuYW1lIiwibGFuZ0NvZGUiLCJsYW5ndWFnZV9jb2RlIl0sIm1hcHBpbmdzIjoiOzs7OztRQUFnQkEsbUIsR0FBQUEsbUI7QUFBVCxTQUFTQSxtQkFBVCxDQUE2QkMsSUFBN0IsRUFBbUM7QUFDeEMsU0FBTztBQUNMQyxRQUFJRCxLQUFLQyxFQURKO0FBRUxDLFdBQU9GLEtBQUtHLE1BRlA7QUFHTEMsZUFBV0osS0FBS0ssVUFIWDtBQUlMQyxjQUFVTixLQUFLTyxTQUpWO0FBS0xDLGNBQVVSLEtBQUtRLFFBTFY7QUFNTEMsY0FBVVQsS0FBS1U7QUFOVixHQUFQO0FBUUQiLCJmaWxlIjoidGVsZWdyYW1IZWxwZXIuanMiLCJzb3VyY2VSb290IjoiL2FwcC9oZWxwZXJzIiwic291cmNlc0NvbnRlbnQiOlsiZXhwb3J0IGZ1bmN0aW9uIHByb2Nlc3NUZWxlZ3JhbVVzZXIodXNlcikge1xuICByZXR1cm4ge1xuICAgIGlkOiB1c2VyLmlkLFxuICAgIGlzQm90OiB1c2VyLmlzX2JvdCxcbiAgICBmaXJzdE5hbWU6IHVzZXIuZmlyc3RfbmFtZSxcbiAgICBsYXN0TmFtZTogdXNlci5sYXN0X25hbWUsXG4gICAgdXNlcm5hbWU6IHVzZXIudXNlcm5hbWUsXG4gICAgbGFuZ0NvZGU6IHVzZXIubGFuZ3VhZ2VfY29kZVxuICB9XG59Il19",
+    "ast": null,
+    "map": {
+      "version": 3,
+      "sources": [
+        "telegramHelper.js"
+      ],
+      "names": [
+        "processTelegramUser",
+        "user",
+        "id",
+        "isBot",
+        "is_bot",
+        "firstName",
+        "first_name",
+        "lastName",
+        "last_name",
+        "username",
+        "langCode",
+        "language_code"
+      ],
+      "mappings": ";;;;;QAAgBA,mB,GAAAA,mB;AAAT,SAASA,mBAAT,CAA6BC,IAA7B,EAAmC;AACxC,SAAO;AACLC,QAAID,KAAKC,EADJ;AAELC,WAAOF,KAAKG,MAFP;AAGLC,eAAWJ,KAAKK,UAHX;AAILC,cAAUN,KAAKO,SAJV;AAKLC,cAAUR,KAAKQ,QALV;AAMLC,cAAUT,KAAKU;AANV,GAAP;AAQD",
+      "file": "telegramHelper.js",
+      "sourceRoot": "/app/helpers",
+      "sourcesContent": [
+        "export function processTelegramUser(user) {\n  return {\n    id: user.id,\n    isBot: user.is_bot,\n    firstName: user.first_name,\n    lastName: user.last_name,\n    username: user.username,\n    langCode: user.language_code\n  }\n}"
+      ]
+    },
+    "mtime": 1599454643000
+  },
+  "{\"filename\":\"/app/helpers/firebaseHelper.js\",\"env\":{},\"retainLines\":false,\"highlightCode\":true,\"suppressDeprecationMessages\":false,\"presets\":[],\"plugins\":[[[],null],[[],null],[[],null],[[],{\"loose\":false,\"spec\":false}],[[],null],[[],null],[[],{\"spec\":false}],[[],null],[[],{\"loose\":false}],[[],null],[[],null],[[],null],[[],{\"loose\":false}],[[],{\"loose\":false}],[[],null],[[],null],[[],null],[[],{\"loose\":false}],[[],null],[[],{\"loose\":false}],[[],null],[[],null],[[],{\"loose\":false}],[[],{\"async\":false,\"asyncGenerators\":false}]],\"ignore\":[],\"code\":true,\"metadata\":true,\"ast\":true,\"comments\":true,\"compact\":\"auto\",\"minified\":false,\"sourceRoot\":\"/app/helpers\",\"babelrc\":true,\"sourceType\":\"module\",\"moduleIds\":false,\"passPerPreset\":false,\"parserOpts\":false,\"generatorOpts\":false}:6.26.3": {
+    "metadata": {
+      "usedHelpers": [
+        "asyncToGenerator",
+        "defineProperty",
+        "interopRequireDefault"
+      ],
+      "marked": [],
+      "modules": {
+        "imports": [
+          {
+            "source": "../.data/service-account.json",
+            "imported": [
+              "default"
+            ],
+            "specifiers": [
+              {
+                "kind": "named",
+                "imported": "default",
+                "local": "serviceAccount"
+              }
+            ]
+          },
+          {
+            "source": "firebase-admin",
+            "imported": [
+              "default"
+            ],
+            "specifiers": [
+              {
+                "kind": "named",
+                "imported": "default",
+                "local": "admin"
+              }
+            ]
+          }
+        ],
+        "exports": {
+          "exported": [
+            "storeUser",
+            "user"
+          ],
+          "specifiers": [
+            {
+              "kind": "local",
+              "local": "storeUser",
+              "exported": "storeUser"
+            },
+            {
+              "kind": "local",
+              "local": "user",
+              "exported": "user"
+            }
+          ]
+        }
+      }
+    },
+    "options": {
+      "filename": "/app/helpers/firebaseHelper.js",
+      "filenameRelative": "/app/helpers/firebaseHelper.js",
+      "env": {},
+      "retainLines": false,
+      "highlightCode": true,
+      "suppressDeprecationMessages": false,
+      "presets": [],
+      "plugins": [
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          {
+            "loose": false,
+            "spec": false
+          }
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          {
+            "spec": false
+          }
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          {
+            "loose": false
+          }
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          {
+            "loose": false
+          }
+        ],
+        [
+          [],
+          {
+            "loose": false
+          }
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          {
+            "loose": false
+          }
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          {
+            "loose": false
+          }
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          {
+            "loose": false
+          }
+        ],
+        [
+          [],
+          {
+            "async": false,
+            "asyncGenerators": false
+          }
+        ]
+      ],
+      "ignore": [],
+      "code": true,
+      "metadata": true,
+      "ast": false,
+      "comments": true,
+      "compact": "auto",
+      "minified": false,
+      "sourceMaps": "both",
+      "sourceMapTarget": "firebaseHelper.js",
+      "sourceFileName": "firebaseHelper.js",
+      "sourceRoot": "/app/helpers",
+      "babelrc": false,
+      "sourceType": "module",
+      "moduleRoot": "/app/helpers",
+      "moduleIds": false,
+      "passPerPreset": false,
+      "parserOpts": false,
+      "generatorOpts": false,
+      "basename": "firebaseHelper"
+    },
+    "ignored": false,
+    "code": "\"use strict\";\n\nObject.defineProperty(exports, \"__esModule\", {\n  value: true\n});\nexports.storeUser = undefined;\n\n// usersRef.once('value').then(snapshot => {\n//   console.log(snapshot.val());\n// })\n\n// usersRef.set({paalex: {name: 'Alex', telegramId: '@paalex505'}}, function(error) {\n//   if (error) {\n//     console.log(\"Data could not be saved.\" + error);\n//   } else {\n//     console.log(\"Data saved successfully.\");\n//   }\n// });\n// usersRef.update({paalex: {name: 'Alex', telegramId: '@paalex505'}}}\n// atomic update\n// usersRef.update({\n//   \"alanisawesome/nickname\": \"Alan The Machine\",\n//   \"gracehop/nickname\": \"Amazing Grace\"\n// });\n\nvar storeUser = exports.storeUser = function () {\n  var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(user) {\n    var userRef, snapshot;\n    return regeneratorRuntime.wrap(function _callee$(_context) {\n      while (1) {\n        switch (_context.prev = _context.next) {\n          case 0:\n            if (user) {\n              _context.next = 2;\n              break;\n            }\n\n            throw new Error('no user to save');\n\n          case 2:\n            userRef = usersRef.child(user.id);\n            _context.next = 5;\n            return userRef.once('value');\n\n          case 5:\n            snapshot = _context.sent;\n\n            console.log(snapshot.val());\n            return _context.abrupt(\"return\", new Promise(function (res, rej) {\n              if (!snapshot) {\n                usersRef.set(_defineProperty({}, user.id, user), function (error) {\n                  if (error) {\n                    console.log(\"User could not be saved.\" + error);\n                    rej(error);\n                  } else {\n                    console.log(\"User saved successfully.\");\n                  }\n                });\n              } else {\n                userRef.update(_defineProperty({}, user.id, user), function (error) {\n                  if (error) {\n                    console.log(\"User could not be saved.\" + error);\n                    rej(error);\n                  } else {\n                    console.log(\"User saved successfully.\");\n                  }\n                });\n              }\n            }));\n\n          case 8:\n          case \"end\":\n            return _context.stop();\n        }\n      }\n    }, _callee, this);\n  }));\n\n  return function storeUser(_x) {\n    return _ref.apply(this, arguments);\n  };\n}();\n\nvar _serviceAccount = require(\"../.data/service-account.json\");\n\nvar _serviceAccount2 = _interopRequireDefault(_serviceAccount);\n\nvar _firebaseAdmin = require(\"firebase-admin\");\n\nvar _firebaseAdmin2 = _interopRequireDefault(_firebaseAdmin);\n\nfunction _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }\n\nfunction _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }\n\nfunction _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step(\"next\", value); }, function (err) { step(\"throw\", err); }); } } return step(\"next\"); }); }; }\n\n_firebaseAdmin2.default.initializeApp({\n  credential: _firebaseAdmin2.default.credential.cert(_serviceAccount2.default),\n  databaseURL: process.env.FIREBASE_DB_URL\n});\n\nvar db = _firebaseAdmin2.default.database();\n\nvar usersRef = db.ref(\"/server/users\");\n//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbImZpcmViYXNlSGVscGVyLmpzIl0sIm5hbWVzIjpbInVzZXIiLCJFcnJvciIsInVzZXJSZWYiLCJ1c2Vyc1JlZiIsImNoaWxkIiwiaWQiLCJvbmNlIiwic25hcHNob3QiLCJjb25zb2xlIiwibG9nIiwidmFsIiwiUHJvbWlzZSIsInJlcyIsInJlaiIsInNldCIsImVycm9yIiwidXBkYXRlIiwic3RvcmVVc2VyIiwiYWRtaW4iLCJpbml0aWFsaXplQXBwIiwiY3JlZGVudGlhbCIsImNlcnQiLCJzZXJ2aWNlQWNjb3VudCIsImRhdGFiYXNlVVJMIiwicHJvY2VzcyIsImVudiIsIkZJUkVCQVNFX0RCX1VSTCIsImRiIiwiZGF0YWJhc2UiLCJyZWYiXSwibWFwcGluZ3MiOiI7Ozs7Ozs7QUFZQTtBQUNBO0FBQ0E7O0FBRUE7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7OztxRUFFTyxpQkFBeUJBLElBQXpCO0FBQUE7QUFBQTtBQUFBO0FBQUE7QUFBQTtBQUFBLGdCQUNBQSxJQURBO0FBQUE7QUFBQTtBQUFBOztBQUFBLGtCQUNZLElBQUlDLEtBQUosQ0FBVSxpQkFBVixDQURaOztBQUFBO0FBRUNDLG1CQUZELEdBRVdDLFNBQVNDLEtBQVQsQ0FBZUosS0FBS0ssRUFBcEIsQ0FGWDtBQUFBO0FBQUEsbUJBR2tCSCxRQUFRSSxJQUFSLENBQWEsT0FBYixDQUhsQjs7QUFBQTtBQUdDQyxvQkFIRDs7QUFJTEMsb0JBQVFDLEdBQVIsQ0FBWUYsU0FBU0csR0FBVCxFQUFaO0FBSkssNkNBS0UsSUFBSUMsT0FBSixDQUFZLFVBQUNDLEdBQUQsRUFBTUMsR0FBTixFQUFjO0FBQy9CLGtCQUFJLENBQUNOLFFBQUwsRUFBZTtBQUNiSix5QkFBU1csR0FBVCxxQkFBZWQsS0FBS0ssRUFBcEIsRUFBeUJMLElBQXpCLEdBQWdDLFVBQVNlLEtBQVQsRUFBZ0I7QUFDOUMsc0JBQUlBLEtBQUosRUFBVztBQUNUUCw0QkFBUUMsR0FBUixDQUFZLDZCQUE2Qk0sS0FBekM7QUFDQUYsd0JBQUlFLEtBQUo7QUFDRCxtQkFIRCxNQUdPO0FBQ0xQLDRCQUFRQyxHQUFSLENBQVksMEJBQVo7QUFFRDtBQUNGLGlCQVJEO0FBU0QsZUFWRCxNQVVPO0FBQ0xQLHdCQUFRYyxNQUFSLHFCQUFpQmhCLEtBQUtLLEVBQXRCLEVBQTJCTCxJQUEzQixHQUFrQyxVQUFTZSxLQUFULEVBQWdCO0FBQ2hELHNCQUFJQSxLQUFKLEVBQVc7QUFDVFAsNEJBQVFDLEdBQVIsQ0FBWSw2QkFBNkJNLEtBQXpDO0FBQ0FGLHdCQUFJRSxLQUFKO0FBQ0QsbUJBSEQsTUFHTztBQUNMUCw0QkFBUUMsR0FBUixDQUFZLDBCQUFaO0FBRUQ7QUFDRixpQkFSRDtBQVNEO0FBRUYsYUF2Qk0sQ0FMRjs7QUFBQTtBQUFBO0FBQUE7QUFBQTtBQUFBO0FBQUE7QUFBQSxHOztrQkFBZVEsUzs7Ozs7QUE5QnRCOzs7O0FBQ0E7Ozs7Ozs7Ozs7QUFFQUMsd0JBQU1DLGFBQU4sQ0FBb0I7QUFDbEJDLGNBQVlGLHdCQUFNRSxVQUFOLENBQWlCQyxJQUFqQixDQUFzQkMsd0JBQXRCLENBRE07QUFFbEJDLGVBQWFDLFFBQVFDLEdBQVIsQ0FBWUM7QUFGUCxDQUFwQjs7QUFLQSxJQUFJQyxLQUFLVCx3QkFBTVUsUUFBTixFQUFUOztBQUVBLElBQUl6QixXQUFXd0IsR0FBR0UsR0FBSCxDQUFPLGVBQVAsQ0FBZiIsImZpbGUiOiJmaXJlYmFzZUhlbHBlci5qcyIsInNvdXJjZVJvb3QiOiIvYXBwL2hlbHBlcnMiLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQgc2VydmljZUFjY291bnQgZnJvbSBcIi4uLy5kYXRhL3NlcnZpY2UtYWNjb3VudC5qc29uXCI7XG5pbXBvcnQgYWRtaW4gZnJvbSBcImZpcmViYXNlLWFkbWluXCI7XG5cbmFkbWluLmluaXRpYWxpemVBcHAoe1xuICBjcmVkZW50aWFsOiBhZG1pbi5jcmVkZW50aWFsLmNlcnQoc2VydmljZUFjY291bnQpLFxuICBkYXRhYmFzZVVSTDogcHJvY2Vzcy5lbnYuRklSRUJBU0VfREJfVVJMXG59KTtcblxudmFyIGRiID0gYWRtaW4uZGF0YWJhc2UoKTtcblxudmFyIHVzZXJzUmVmID0gZGIucmVmKFwiL3NlcnZlci91c2Vyc1wiKTtcblxuLy8gdXNlcnNSZWYub25jZSgndmFsdWUnKS50aGVuKHNuYXBzaG90ID0+IHtcbi8vICAgY29uc29sZS5sb2coc25hcHNob3QudmFsKCkpO1xuLy8gfSlcblxuLy8gdXNlcnNSZWYuc2V0KHtwYWFsZXg6IHtuYW1lOiAnQWxleCcsIHRlbGVncmFtSWQ6ICdAcGFhbGV4NTA1J319LCBmdW5jdGlvbihlcnJvcikge1xuLy8gICBpZiAoZXJyb3IpIHtcbi8vICAgICBjb25zb2xlLmxvZyhcIkRhdGEgY291bGQgbm90IGJlIHNhdmVkLlwiICsgZXJyb3IpO1xuLy8gICB9IGVsc2Uge1xuLy8gICAgIGNvbnNvbGUubG9nKFwiRGF0YSBzYXZlZCBzdWNjZXNzZnVsbHkuXCIpO1xuLy8gICB9XG4vLyB9KTtcbi8vIHVzZXJzUmVmLnVwZGF0ZSh7cGFhbGV4OiB7bmFtZTogJ0FsZXgnLCB0ZWxlZ3JhbUlkOiAnQHBhYWxleDUwNSd9fX1cbi8vIGF0b21pYyB1cGRhdGVcbi8vIHVzZXJzUmVmLnVwZGF0ZSh7XG4vLyAgIFwiYWxhbmlzYXdlc29tZS9uaWNrbmFtZVwiOiBcIkFsYW4gVGhlIE1hY2hpbmVcIixcbi8vICAgXCJncmFjZWhvcC9uaWNrbmFtZVwiOiBcIkFtYXppbmcgR3JhY2VcIlxuLy8gfSk7XG5cbmV4cG9ydCBhc3luYyBmdW5jdGlvbiBzdG9yZVVzZXIodXNlcikge1xuICBpZiAoIXVzZXIpIHRocm93IG5ldyBFcnJvcignbm8gdXNlciB0byBzYXZlJyk7XG4gIGNvbnN0IHVzZXJSZWYgPSB1c2Vyc1JlZi5jaGlsZCh1c2VyLmlkKTtcbiAgY29uc3Qgc25hcHNob3QgPSBhd2FpdCB1c2VyUmVmLm9uY2UoJ3ZhbHVlJyk7XG4gIGNvbnNvbGUubG9nKHNuYXBzaG90LnZhbCgpKTtcbiAgcmV0dXJuIG5ldyBQcm9taXNlKChyZXMsIHJlaikgPT4ge1xuICAgIGlmICghc25hcHNob3QpIHtcbiAgICAgIHVzZXJzUmVmLnNldCh7W3VzZXIuaWRdOiB1c2VyfSwgZnVuY3Rpb24oZXJyb3IpIHtcbiAgICAgICAgaWYgKGVycm9yKSB7XG4gICAgICAgICAgY29uc29sZS5sb2coXCJVc2VyIGNvdWxkIG5vdCBiZSBzYXZlZC5cIiArIGVycm9yKTtcbiAgICAgICAgICByZWooZXJyb3IpXG4gICAgICAgIH0gZWxzZSB7XG4gICAgICAgICAgY29uc29sZS5sb2coXCJVc2VyIHNhdmVkIHN1Y2Nlc3NmdWxseS5cIik7XG5cbiAgICAgICAgfVxuICAgICAgfSk7XG4gICAgfSBlbHNlIHtcbiAgICAgIHVzZXJSZWYudXBkYXRlKHtbdXNlci5pZF06IHVzZXJ9LCBmdW5jdGlvbihlcnJvcikge1xuICAgICAgICBpZiAoZXJyb3IpIHtcbiAgICAgICAgICBjb25zb2xlLmxvZyhcIlVzZXIgY291bGQgbm90IGJlIHNhdmVkLlwiICsgZXJyb3IpO1xuICAgICAgICAgIHJlaihlcnJvcilcbiAgICAgICAgfSBlbHNlIHtcbiAgICAgICAgICBjb25zb2xlLmxvZyhcIlVzZXIgc2F2ZWQgc3VjY2Vzc2Z1bGx5LlwiKTtcblxuICAgICAgICB9XG4gICAgICB9KTtcbiAgICB9XG4gICAgXG4gIH0pXG59Il19",
+    "ast": null,
+    "map": {
+      "version": 3,
+      "sources": [
+        "firebaseHelper.js"
+      ],
+      "names": [
+        "user",
+        "Error",
+        "userRef",
+        "usersRef",
+        "child",
+        "id",
+        "once",
+        "snapshot",
+        "console",
+        "log",
+        "val",
+        "Promise",
+        "res",
+        "rej",
+        "set",
+        "error",
+        "update",
+        "storeUser",
+        "admin",
+        "initializeApp",
+        "credential",
+        "cert",
+        "serviceAccount",
+        "databaseURL",
+        "process",
+        "env",
+        "FIREBASE_DB_URL",
+        "db",
+        "database",
+        "ref"
+      ],
+      "mappings": ";;;;;;;AAYA;AACA;AACA;;AAEA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;;;qEAEO,iBAAyBA,IAAzB;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA,gBACAA,IADA;AAAA;AAAA;AAAA;;AAAA,kBACY,IAAIC,KAAJ,CAAU,iBAAV,CADZ;;AAAA;AAECC,mBAFD,GAEWC,SAASC,KAAT,CAAeJ,KAAKK,EAApB,CAFX;AAAA;AAAA,mBAGkBH,QAAQI,IAAR,CAAa,OAAb,CAHlB;;AAAA;AAGCC,oBAHD;;AAILC,oBAAQC,GAAR,CAAYF,SAASG,GAAT,EAAZ;AAJK,6CAKE,IAAIC,OAAJ,CAAY,UAACC,GAAD,EAAMC,GAAN,EAAc;AAC/B,kBAAI,CAACN,QAAL,EAAe;AACbJ,yBAASW,GAAT,qBAAed,KAAKK,EAApB,EAAyBL,IAAzB,GAAgC,UAASe,KAAT,EAAgB;AAC9C,sBAAIA,KAAJ,EAAW;AACTP,4BAAQC,GAAR,CAAY,6BAA6BM,KAAzC;AACAF,wBAAIE,KAAJ;AACD,mBAHD,MAGO;AACLP,4BAAQC,GAAR,CAAY,0BAAZ;AAED;AACF,iBARD;AASD,eAVD,MAUO;AACLP,wBAAQc,MAAR,qBAAiBhB,KAAKK,EAAtB,EAA2BL,IAA3B,GAAkC,UAASe,KAAT,EAAgB;AAChD,sBAAIA,KAAJ,EAAW;AACTP,4BAAQC,GAAR,CAAY,6BAA6BM,KAAzC;AACAF,wBAAIE,KAAJ;AACD,mBAHD,MAGO;AACLP,4BAAQC,GAAR,CAAY,0BAAZ;AAED;AACF,iBARD;AASD;AAEF,aAvBM,CALF;;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA,G;;kBAAeQ,S;;;;;AA9BtB;;;;AACA;;;;;;;;;;AAEAC,wBAAMC,aAAN,CAAoB;AAClBC,cAAYF,wBAAME,UAAN,CAAiBC,IAAjB,CAAsBC,wBAAtB,CADM;AAElBC,eAAaC,QAAQC,GAAR,CAAYC;AAFP,CAApB;;AAKA,IAAIC,KAAKT,wBAAMU,QAAN,EAAT;;AAEA,IAAIzB,WAAWwB,GAAGE,GAAH,CAAO,eAAP,CAAf",
+      "file": "firebaseHelper.js",
+      "sourceRoot": "/app/helpers",
+      "sourcesContent": [
+        "import serviceAccount from \"../.data/service-account.json\";\nimport admin from \"firebase-admin\";\n\nadmin.initializeApp({\n  credential: admin.credential.cert(serviceAccount),\n  databaseURL: process.env.FIREBASE_DB_URL\n});\n\nvar db = admin.database();\n\nvar usersRef = db.ref(\"/server/users\");\n\n// usersRef.once('value').then(snapshot => {\n//   console.log(snapshot.val());\n// })\n\n// usersRef.set({paalex: {name: 'Alex', telegramId: '@paalex505'}}, function(error) {\n//   if (error) {\n//     console.log(\"Data could not be saved.\" + error);\n//   } else {\n//     console.log(\"Data saved successfully.\");\n//   }\n// });\n// usersRef.update({paalex: {name: 'Alex', telegramId: '@paalex505'}}}\n// atomic update\n// usersRef.update({\n//   \"alanisawesome/nickname\": \"Alan The Machine\",\n//   \"gracehop/nickname\": \"Amazing Grace\"\n// });\n\nexport async function storeUser(user) {\n  if (!user) throw new Error('no user to save');\n  const userRef = usersRef.child(user.id);\n  const snapshot = await userRef.once('value');\n  console.log(snapshot.val());\n  return new Promise((res, rej) => {\n    if (!snapshot) {\n      usersRef.set({[user.id]: user}, function(error) {\n        if (error) {\n          console.log(\"User could not be saved.\" + error);\n          rej(error)\n        } else {\n          console.log(\"User saved successfully.\");\n\n        }\n      });\n    } else {\n      userRef.update({[user.id]: user}, function(error) {\n        if (error) {\n          console.log(\"User could not be saved.\" + error);\n          rej(error)\n        } else {\n          console.log(\"User saved successfully.\");\n\n        }\n      });\n    }\n    \n  })\n}"
+      ]
+    },
+    "mtime": 1599456262000
+  },
+  "{\"filename\":\"/app/server.js\",\"env\":{},\"retainLines\":false,\"highlightCode\":true,\"suppressDeprecationMessages\":false,\"presets\":[],\"plugins\":[[[],null],[[],null],[[],null],[[],null],[[],{\"loose\":false,\"spec\":false}],[[],null],[[],null],[[],{\"spec\":false}],[[],null],[[],{\"loose\":false}],[[],null],[[],null],[[],null],[[],{\"loose\":false}],[[],{\"loose\":false}],[[],null],[[],null],[[],null],[[],{\"loose\":false}],[[],null],[[],{\"loose\":false}],[[],null],[[],null],[[],{\"loose\":false}],[[],{\"async\":false,\"asyncGenerators\":false}]],\"ignore\":[],\"code\":true,\"metadata\":true,\"ast\":true,\"comments\":true,\"compact\":\"auto\",\"minified\":false,\"sourceRoot\":\"/app\",\"babelrc\":true,\"sourceType\":\"module\",\"moduleIds\":false,\"passPerPreset\":false,\"parserOpts\":false,\"generatorOpts\":false}:6.26.3": {
+    "metadata": {
+      "usedHelpers": [
+        "interopRequireDefault"
+      ],
+      "marked": [],
+      "modules": {
+        "imports": [
+          {
+            "source": "express",
+            "imported": [
+              "default"
+            ],
+            "specifiers": [
+              {
+                "kind": "named",
+                "imported": "default",
+                "local": "express"
+              }
+            ]
+          },
+          {
+            "source": "./helpers/telegramHelper",
+            "imported": [
+              "botInit"
+            ],
+            "specifiers": [
+              {
+                "kind": "named",
+                "imported": "botInit",
+                "local": "botInit"
+              }
+            ]
+          }
+        ],
+        "exports": {
+          "exported": [],
+          "specifiers": []
+        }
+      }
+    },
+    "options": {
+      "filename": "/app/server.js",
+      "filenameRelative": "/app/server.js",
+      "env": {},
+      "retainLines": false,
+      "highlightCode": true,
+      "suppressDeprecationMessages": false,
+      "presets": [],
+      "plugins": [
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          {
+            "loose": false,
+            "spec": false
+          }
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          {
+            "spec": false
+          }
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          {
+            "loose": false
+          }
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          {
+            "loose": false
+          }
+        ],
+        [
+          [],
+          {
+            "loose": false
+          }
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          {
+            "loose": false
+          }
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          {
+            "loose": false
+          }
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          {
+            "loose": false
+          }
+        ],
+        [
+          [],
+          {
+            "async": false,
+            "asyncGenerators": false
+          }
+        ]
+      ],
+      "ignore": [],
+      "code": true,
+      "metadata": true,
+      "ast": false,
+      "comments": true,
+      "compact": "auto",
+      "minified": false,
+      "sourceMaps": "both",
+      "sourceMapTarget": "server.js",
+      "sourceFileName": "server.js",
+      "sourceRoot": "/app",
+      "babelrc": false,
+      "sourceType": "module",
+      "moduleRoot": "/app",
+      "moduleIds": false,
+      "passPerPreset": false,
+      "parserOpts": false,
+      "generatorOpts": false,
+      "basename": "server"
+    },
+    "ignored": false,
+    "code": "\"use strict\";\n\nvar _express = require(\"express\");\n\nvar _express2 = _interopRequireDefault(_express);\n\nvar _telegramHelper = require(\"./helpers/telegramHelper\");\n\nfunction _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }\n\n// our default array of dreams\n// server.js\n// where your node app starts\n\n// we've started you off with Express (https://expressjs.com/)\n// but feel free to use whatever libraries or frameworks you'd like through `package.json`.\nvar dreams = [\"Find and count some sheep\", \"Climb a really tall mountain\", \"Wash the dishes\"];\n\nvar app = (0, _express2.default)();\n\n// make all the files in 'public' available\n// https://expressjs.com/en/starter/static-files.html\napp.use(_express2.default.static(\"public\"));\n\n// https://expressjs.com/en/starter/basic-routing.html\napp.get(\"/\", function (request, response) {\n  response.sendFile(__dirname + \"/views/index.html\");\n});\n\n// send the default array of dreams to the webpage\napp.get(\"/dreams\", function (request, response) {\n  // express helps us take JS objects and send them as JSON\n  response.json(dreams);\n});\n\n// listen for requests :)\nvar listener = app.listen(process.env.PORT, function () {\n  console.log(\"Your app is listening on port \" + listener.address().port);\n});\n\n(0, _telegramHelper.botInit)();\n//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNlcnZlci5qcyJdLCJuYW1lcyI6WyJkcmVhbXMiLCJhcHAiLCJ1c2UiLCJleHByZXNzIiwic3RhdGljIiwiZ2V0IiwicmVxdWVzdCIsInJlc3BvbnNlIiwic2VuZEZpbGUiLCJfX2Rpcm5hbWUiLCJqc29uIiwibGlzdGVuZXIiLCJsaXN0ZW4iLCJwcm9jZXNzIiwiZW52IiwiUE9SVCIsImNvbnNvbGUiLCJsb2ciLCJhZGRyZXNzIiwicG9ydCJdLCJtYXBwaW5ncyI6Ijs7QUFLQTs7OztBQUNBOzs7O0FBQ0E7QUFQQTtBQUNBOztBQUVBO0FBQ0E7QUFJQSxJQUFNQSxTQUFTLENBQ2IsMkJBRGEsRUFFYiw4QkFGYSxFQUdiLGlCQUhhLENBQWY7O0FBTUEsSUFBTUMsTUFBTSx3QkFBWjs7QUFFQTtBQUNBO0FBQ0FBLElBQUlDLEdBQUosQ0FBUUMsa0JBQVFDLE1BQVIsQ0FBZSxRQUFmLENBQVI7O0FBRUE7QUFDQUgsSUFBSUksR0FBSixDQUFRLEdBQVIsRUFBYSxVQUFDQyxPQUFELEVBQVVDLFFBQVYsRUFBdUI7QUFDbENBLFdBQVNDLFFBQVQsQ0FBa0JDLFlBQVksbUJBQTlCO0FBQ0QsQ0FGRDs7QUFJQTtBQUNBUixJQUFJSSxHQUFKLENBQVEsU0FBUixFQUFtQixVQUFDQyxPQUFELEVBQVVDLFFBQVYsRUFBdUI7QUFDeEM7QUFDQUEsV0FBU0csSUFBVCxDQUFjVixNQUFkO0FBQ0QsQ0FIRDs7QUFLQTtBQUNBLElBQU1XLFdBQVdWLElBQUlXLE1BQUosQ0FBV0MsUUFBUUMsR0FBUixDQUFZQyxJQUF2QixFQUE2QixZQUFNO0FBQ2xEQyxVQUFRQyxHQUFSLENBQVksbUNBQW1DTixTQUFTTyxPQUFULEdBQW1CQyxJQUFsRTtBQUNELENBRmdCLENBQWpCOztBQUlBIiwiZmlsZSI6InNlcnZlci5qcyIsInNvdXJjZVJvb3QiOiIvYXBwIiwic291cmNlc0NvbnRlbnQiOlsiLy8gc2VydmVyLmpzXG4vLyB3aGVyZSB5b3VyIG5vZGUgYXBwIHN0YXJ0c1xuXG4vLyB3ZSd2ZSBzdGFydGVkIHlvdSBvZmYgd2l0aCBFeHByZXNzIChodHRwczovL2V4cHJlc3Nqcy5jb20vKVxuLy8gYnV0IGZlZWwgZnJlZSB0byB1c2Ugd2hhdGV2ZXIgbGlicmFyaWVzIG9yIGZyYW1ld29ya3MgeW91J2QgbGlrZSB0aHJvdWdoIGBwYWNrYWdlLmpzb25gLlxuaW1wb3J0IGV4cHJlc3MgZnJvbSBcImV4cHJlc3NcIjtcbmltcG9ydCB7IGJvdEluaXQgfSBmcm9tIFwiLi9oZWxwZXJzL3RlbGVncmFtSGVscGVyXCI7XG4vLyBvdXIgZGVmYXVsdCBhcnJheSBvZiBkcmVhbXNcbmNvbnN0IGRyZWFtcyA9IFtcbiAgXCJGaW5kIGFuZCBjb3VudCBzb21lIHNoZWVwXCIsXG4gIFwiQ2xpbWIgYSByZWFsbHkgdGFsbCBtb3VudGFpblwiLFxuICBcIldhc2ggdGhlIGRpc2hlc1wiXG5dO1xuXG5jb25zdCBhcHAgPSBleHByZXNzKCk7XG5cbi8vIG1ha2UgYWxsIHRoZSBmaWxlcyBpbiAncHVibGljJyBhdmFpbGFibGVcbi8vIGh0dHBzOi8vZXhwcmVzc2pzLmNvbS9lbi9zdGFydGVyL3N0YXRpYy1maWxlcy5odG1sXG5hcHAudXNlKGV4cHJlc3Muc3RhdGljKFwicHVibGljXCIpKTtcblxuLy8gaHR0cHM6Ly9leHByZXNzanMuY29tL2VuL3N0YXJ0ZXIvYmFzaWMtcm91dGluZy5odG1sXG5hcHAuZ2V0KFwiL1wiLCAocmVxdWVzdCwgcmVzcG9uc2UpID0+IHtcbiAgcmVzcG9uc2Uuc2VuZEZpbGUoX19kaXJuYW1lICsgXCIvdmlld3MvaW5kZXguaHRtbFwiKTtcbn0pO1xuXG4vLyBzZW5kIHRoZSBkZWZhdWx0IGFycmF5IG9mIGRyZWFtcyB0byB0aGUgd2VicGFnZVxuYXBwLmdldChcIi9kcmVhbXNcIiwgKHJlcXVlc3QsIHJlc3BvbnNlKSA9PiB7XG4gIC8vIGV4cHJlc3MgaGVscHMgdXMgdGFrZSBKUyBvYmplY3RzIGFuZCBzZW5kIHRoZW0gYXMgSlNPTlxuICByZXNwb25zZS5qc29uKGRyZWFtcyk7XG59KTtcblxuLy8gbGlzdGVuIGZvciByZXF1ZXN0cyA6KVxuY29uc3QgbGlzdGVuZXIgPSBhcHAubGlzdGVuKHByb2Nlc3MuZW52LlBPUlQsICgpID0+IHtcbiAgY29uc29sZS5sb2coXCJZb3VyIGFwcCBpcyBsaXN0ZW5pbmcgb24gcG9ydCBcIiArIGxpc3RlbmVyLmFkZHJlc3MoKS5wb3J0KTtcbn0pO1xuXG5ib3RJbml0KCk7XG4iXX0=",
+    "ast": null,
+    "map": {
+      "version": 3,
+      "sources": [
+        "server.js"
+      ],
+      "names": [
+        "dreams",
+        "app",
+        "use",
+        "express",
+        "static",
+        "get",
+        "request",
+        "response",
+        "sendFile",
+        "__dirname",
+        "json",
+        "listener",
+        "listen",
+        "process",
+        "env",
+        "PORT",
+        "console",
+        "log",
+        "address",
+        "port"
+      ],
+      "mappings": ";;AAKA;;;;AACA;;;;AACA;AAPA;AACA;;AAEA;AACA;AAIA,IAAMA,SAAS,CACb,2BADa,EAEb,8BAFa,EAGb,iBAHa,CAAf;;AAMA,IAAMC,MAAM,wBAAZ;;AAEA;AACA;AACAA,IAAIC,GAAJ,CAAQC,kBAAQC,MAAR,CAAe,QAAf,CAAR;;AAEA;AACAH,IAAII,GAAJ,CAAQ,GAAR,EAAa,UAACC,OAAD,EAAUC,QAAV,EAAuB;AAClCA,WAASC,QAAT,CAAkBC,YAAY,mBAA9B;AACD,CAFD;;AAIA;AACAR,IAAII,GAAJ,CAAQ,SAAR,EAAmB,UAACC,OAAD,EAAUC,QAAV,EAAuB;AACxC;AACAA,WAASG,IAAT,CAAcV,MAAd;AACD,CAHD;;AAKA;AACA,IAAMW,WAAWV,IAAIW,MAAJ,CAAWC,QAAQC,GAAR,CAAYC,IAAvB,EAA6B,YAAM;AAClDC,UAAQC,GAAR,CAAY,mCAAmCN,SAASO,OAAT,GAAmBC,IAAlE;AACD,CAFgB,CAAjB;;AAIA",
+      "file": "server.js",
+      "sourceRoot": "/app",
+      "sourcesContent": [
+        "// server.js\n// where your node app starts\n\n// we've started you off with Express (https://expressjs.com/)\n// but feel free to use whatever libraries or frameworks you'd like through `package.json`.\nimport express from \"express\";\nimport { botInit } from \"./helpers/telegramHelper\";\n// our default array of dreams\nconst dreams = [\n  \"Find and count some sheep\",\n  \"Climb a really tall mountain\",\n  \"Wash the dishes\"\n];\n\nconst app = express();\n\n// make all the files in 'public' available\n// https://expressjs.com/en/starter/static-files.html\napp.use(express.static(\"public\"));\n\n// https://expressjs.com/en/starter/basic-routing.html\napp.get(\"/\", (request, response) => {\n  response.sendFile(__dirname + \"/views/index.html\");\n});\n\n// send the default array of dreams to the webpage\napp.get(\"/dreams\", (request, response) => {\n  // express helps us take JS objects and send them as JSON\n  response.json(dreams);\n});\n\n// listen for requests :)\nconst listener = app.listen(process.env.PORT, () => {\n  console.log(\"Your app is listening on port \" + listener.address().port);\n});\n\nbotInit();\n"
+      ]
+    },
+    "mtime": 1599502515000
+  },
+  "{\"filename\":\"/app/helpers/telegramHelper.js\",\"env\":{},\"retainLines\":false,\"highlightCode\":true,\"suppressDeprecationMessages\":false,\"presets\":[],\"plugins\":[[[],null],[[],null],[[],null],[[],null],[[],{\"loose\":false,\"spec\":false}],[[],null],[[],null],[[],{\"spec\":false}],[[],null],[[],{\"loose\":false}],[[],null],[[],null],[[],null],[[],{\"loose\":false}],[[],{\"loose\":false}],[[],null],[[],null],[[],null],[[],{\"loose\":false}],[[],null],[[],{\"loose\":false}],[[],null],[[],null],[[],{\"loose\":false}],[[],{\"async\":false,\"asyncGenerators\":false}]],\"ignore\":[],\"code\":true,\"metadata\":true,\"ast\":true,\"comments\":true,\"compact\":\"auto\",\"minified\":false,\"sourceRoot\":\"/app/helpers\",\"babelrc\":true,\"sourceType\":\"module\",\"moduleIds\":false,\"passPerPreset\":false,\"parserOpts\":false,\"generatorOpts\":false}:6.26.3": {
+    "metadata": {
+      "usedHelpers": [
+        "asyncToGenerator",
+        "interopRequireDefault"
+      ],
+      "marked": [],
+      "modules": {
+        "imports": [
+          {
+            "source": "telegraf",
+            "imported": [
+              "default"
+            ],
+            "specifiers": [
+              {
+                "kind": "named",
+                "imported": "default",
+                "local": "Telegraf"
+              }
+            ]
+          },
+          {
+            "source": "telegraf/markup",
+            "imported": [
+              "default"
+            ],
+            "specifiers": [
+              {
+                "kind": "named",
+                "imported": "default",
+                "local": "Markup"
+              }
+            ]
+          },
+          {
+            "source": "telegraf/stage",
+            "imported": [
+              "default"
+            ],
+            "specifiers": [
+              {
+                "kind": "named",
+                "imported": "default",
+                "local": "Stage"
+              }
+            ]
+          },
+          {
+            "source": "telegraf/session",
+            "imported": [
+              "default"
+            ],
+            "specifiers": [
+              {
+                "kind": "named",
+                "imported": "default",
+                "local": "session"
+              }
+            ]
+          },
+          {
+            "source": "telegraf/scenes/wizard",
+            "imported": [
+              "default"
+            ],
+            "specifiers": [
+              {
+                "kind": "named",
+                "imported": "default",
+                "local": "WizardScene"
+              }
+            ]
+          },
+          {
+            "source": "./firebaseHelper",
+            "imported": [
+              "storeUser",
+              "storeOffer"
+            ],
+            "specifiers": [
+              {
+                "kind": "named",
+                "imported": "storeUser",
+                "local": "storeUser"
+              },
+              {
+                "kind": "named",
+                "imported": "storeOffer",
+                "local": "storeOffer"
+              }
+            ]
+          },
+          {
+            "source": "telegraf-session-local",
+            "imported": [
+              "default"
+            ],
+            "specifiers": [
+              {
+                "kind": "named",
+                "imported": "default",
+                "local": "LocalSession"
+              }
+            ]
+          },
+          {
+            "source": "lodash",
+            "imported": [
+              "default"
+            ],
+            "specifiers": [
+              {
+                "kind": "named",
+                "imported": "default",
+                "local": "_"
+              }
+            ]
+          }
+        ],
+        "exports": {
+          "exported": [
+            "botInit"
+          ],
+          "specifiers": [
+            {
+              "kind": "local",
+              "local": "botInit",
+              "exported": "botInit"
+            }
+          ]
+        }
+      }
+    },
+    "options": {
+      "filename": "/app/helpers/telegramHelper.js",
+      "filenameRelative": "/app/helpers/telegramHelper.js",
+      "env": {},
+      "retainLines": false,
+      "highlightCode": true,
+      "suppressDeprecationMessages": false,
+      "presets": [],
+      "plugins": [
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          {
+            "loose": false,
+            "spec": false
+          }
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          {
+            "spec": false
+          }
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          {
+            "loose": false
+          }
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          {
+            "loose": false
+          }
+        ],
+        [
+          [],
+          {
+            "loose": false
+          }
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          {
+            "loose": false
+          }
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          {
+            "loose": false
+          }
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          {
+            "loose": false
+          }
+        ],
+        [
+          [],
+          {
+            "async": false,
+            "asyncGenerators": false
+          }
+        ]
+      ],
+      "ignore": [],
+      "code": true,
+      "metadata": true,
+      "ast": false,
+      "comments": true,
+      "compact": "auto",
+      "minified": false,
+      "sourceMaps": "both",
+      "sourceMapTarget": "telegramHelper.js",
+      "sourceFileName": "telegramHelper.js",
+      "sourceRoot": "/app/helpers",
+      "babelrc": false,
+      "sourceType": "module",
+      "moduleRoot": "/app/helpers",
+      "moduleIds": false,
+      "passPerPreset": false,
+      "parserOpts": false,
+      "generatorOpts": false,
+      "basename": "telegramHelper"
+    },
+    "ignored": false,
+    "code": "\"use strict\";\n\nObject.defineProperty(exports, \"__esModule\", {\n  value: true\n});\nexports.botInit = botInit;\n\nvar _telegraf = require(\"telegraf\");\n\nvar _telegraf2 = _interopRequireDefault(_telegraf);\n\nvar _markup = require(\"telegraf/markup\");\n\nvar _markup2 = _interopRequireDefault(_markup);\n\nvar _stage = require(\"telegraf/stage\");\n\nvar _stage2 = _interopRequireDefault(_stage);\n\nvar _session = require(\"telegraf/session\");\n\nvar _session2 = _interopRequireDefault(_session);\n\nvar _wizard = require(\"telegraf/scenes/wizard\");\n\nvar _wizard2 = _interopRequireDefault(_wizard);\n\nvar _firebaseHelper = require(\"./firebaseHelper\");\n\nvar _telegrafSessionLocal = require(\"telegraf-session-local\");\n\nvar _telegrafSessionLocal2 = _interopRequireDefault(_telegrafSessionLocal);\n\nvar _lodash = require(\"lodash\");\n\nvar _lodash2 = _interopRequireDefault(_lodash);\n\nfunction _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }\n\nfunction _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step(\"next\", value); }, function (err) { step(\"throw\", err); }); } } return step(\"next\"); }); }; }\n\nvar BUY = \"BUY\";\nvar SELL = \"SELL\";\nvar USD = \"USD\";\nvar EUR = \"EUR\";\nvar BYN = \"BYN\";\nvar BUY_USD = BUY + \"_\" + USD;\nvar BUY_EUR = BUY + \"_\" + EUR;\nvar SELL_USD = SELL + \"_\" + USD;\nvar SELL_EUR = SELL + \"_\" + EUR;\nvar MINSK = \"MINSK\";\nvar GRODNO = \"GRODNO\";\nvar BOBRUYSK = \"BOBRUYSK\";\nvar BARANOVICHI = \"BARANOVICHI\";\n\nvar MINSK_WORD = \"Минск\";\nvar GRODNO_WORD = \"Гродно\";\nvar BOBRUYSK_WORD = \"Бобруйск\";\nvar BARANOVICHI_WORD = \"Барановичи\";\n\nvar BUY_USD_WORD = \"купить USD\";\nvar BUY_EUR_WORD = \"купить EUR\";\nvar SELL_USD_WORD = \"продать USD\";\nvar SELL_EUR_WORD = \"продать EUR\";\n\nfunction getCityWord(city) {\n  var word = void 0;\n  switch (city) {\n    case MINSK:\n      word = MINSK_WORD;\n      break;\n    case GRODNO:\n      word = GRODNO_WORD;\n      break;\n    case BOBRUYSK:\n      word = BOBRUYSK_WORD;\n      break;\n    case BARANOVICHI:\n      word = BARANOVICHI_WORD;\n      break;\n  }\n  return word;\n}\n\nfunction getActionPhrase(action) {\n  var word = void 0;\n  switch (action) {\n    case BUY_USD:\n      word = BUY_USD_WORD;\n      break;\n    case BUY_EUR:\n      word = BUY_EUR_WORD;\n      break;\n    case SELL_USD:\n      word = SELL_USD_WORD;\n      break;\n    case SELL_EUR:\n      word = SELL_EUR_WORD;\n      break;\n  }\n  return word;\n}\n\nfunction processTelegramUser(user) {\n  return {\n    id: user.id,\n    isBot: user.is_bot,\n    firstName: user.first_name,\n    lastName: user.last_name,\n    username: user.username,\n    langCode: user.language_code\n  };\n}\n\nvar initialMenu = _markup2.default.inlineKeyboard([[_markup2.default.callbackButton(BUY_USD_WORD + \" $\", BUY_USD), _markup2.default.callbackButton(BUY_EUR_WORD + \" \\u20AC\", BUY_EUR)], [_markup2.default.callbackButton(SELL_USD_WORD + \" $\", SELL_USD), _markup2.default.callbackButton(SELL_EUR_WORD + \" \\u20AC\", SELL_EUR)]]).extra();\n\nvar bot = new _telegraf2.default(process.env.TELEGRAM_API_KEY);\n\nvar citiesButtons = _markup2.default.inlineKeyboard([[_markup2.default.callbackButton(MINSK_WORD, MINSK), _markup2.default.callbackButton(GRODNO_WORD, GRODNO)], [_markup2.default.callbackButton(BOBRUYSK_WORD, BOBRUYSK), _markup2.default.callbackButton(BARANOVICHI_WORD, BARANOVICHI)]]).extra();\n\nvar offerWizard = new _wizard2.default(\"offer\", function (ctx) {\n  // console.log('ctx',ctx)\n  saveUser(ctx);\n  ctx.reply(\"Привет. Что будем делать? 🐰\", initialMenu);\n  return ctx.wizard.next();\n}, function (ctx) {\n  console.log('ctx.update', ctx.update);\n  if (!ctx.update.callback_query || _lodash2.default.get(ctx, 'update.message.text') === '/start') {\n    ctx.scene.reenter();\n    return;\n  }\n  var choice = ctx.update.callback_query.data;\n  if (choice) {\n    var currency = choice.split('_')[1];\n    var chosenAction = choice.split('_')[0];\n    ctx.wizard.state.currencySource = chosenAction === BUY ? BYN : currency;\n    ctx.wizard.state.currencyDestination = chosenAction === SELL ? BYN : currency;\n    ctx.wizard.state.action = chosenAction;\n    ctx.wizard.state.transactionType = choice;\n    if (currency) {\n      var phrase = getActionPhrase(choice);\n      if (phrase) {\n        ctx.reply(\"\\u041F\\u043E\\u043D\\u044F\\u0442\\u043D\\u043E, \" + phrase + \". \\u0421\\u043A\\u043E\\u043B\\u044C\\u043A\\u043E \" + currency + \"?\");\n        return ctx.wizard.next();\n      }\n    }\n  }\n}, function (ctx) {\n  console.log('ctx.update', ctx.update);\n  if (ctx.update.callback_query || _lodash2.default.get(ctx, 'update.message.text') === '/start') {\n    return ctx.scene.reenter();\n  }\n  ctx.wizard.state.amount = ctx.message.text;\n  var _ctx$wizard$state = ctx.wizard.state,\n      amount = _ctx$wizard$state.amount,\n      currencySource = _ctx$wizard$state.currencySource,\n      currencyDestination = _ctx$wizard$state.currencyDestination,\n      action = _ctx$wizard$state.action;\n\n  var currency = action === SELL ? currencySource : currencyDestination;\n  ctx.reply(\"\\uD83D\\uDC30 \\u041E\\u043A. \" + amount + \" \" + currency + \". \\u041F\\u043E \\u043A\\u0430\\u043A\\u043E\\u043C\\u0443 \\u043A\\u0443\\u0440\\u0441\\u0443?\");\n  return ctx.wizard.next();\n}, function (ctx) {\n  console.log('ctx.update', ctx.update);\n  if (ctx.update.callback_query || _lodash2.default.get(ctx, 'update.message.text') === '/start') {\n    ctx.scene.reenter();\n    return;\n  }\n  ctx.wizard.state.rate = ctx.message.text;\n  var _ctx$wizard$state2 = ctx.wizard.state,\n      amount = _ctx$wizard$state2.amount,\n      currencySource = _ctx$wizard$state2.currencySource,\n      currencyDestination = _ctx$wizard$state2.currencyDestination,\n      action = _ctx$wizard$state2.action;\n\n  var currency = action === SELL ? currencySource : currencyDestination;\n\n  ctx.reply(\"\\u041F\\u043E\\u043D\\u044F\\u0442\\u043D\\u043E. \" + ctx.wizard.state.rate + \" \" + currency + \"-\" + BYN + \".\\n\" + \"\\u0412 \\u043A\\u0430\\u043A\\u043E\\u043C \\u0433\\u043E\\u0440\\u043E\\u0434\\u0435 \\u0432\\u044B \\u043C\\u043E\\u0436\\u0435\\u0442\\u0435 \\u0432\\u0441\\u0442\\u0440\\u0435\\u0442\\u0438\\u0442\\u0441\\u044F?\", citiesButtons);\n  return ctx.wizard.next();\n}, function (ctx) {\n  console.log('ctx.update', ctx.update);\n  if (!ctx.update.callback_query || _lodash2.default.get(ctx, 'update.message.text') === '/start') {\n    ctx.scene.reenter();\n    return;\n  }\n  ctx.wizard.state.city = ctx.update.callback_query.data;\n  var _ctx$wizard$state3 = ctx.wizard.state,\n      currencySource = _ctx$wizard$state3.currencySource,\n      currencyDestination = _ctx$wizard$state3.currencyDestination,\n      rate = _ctx$wizard$state3.rate,\n      amount = _ctx$wizard$state3.amount,\n      action = _ctx$wizard$state3.action,\n      transactionType = _ctx$wizard$state3.transactionType,\n      city = _ctx$wizard$state3.city;\n\n  var currency = action === SELL ? currencySource : currencyDestination;\n  console.log(\"ctx.wizard.state\", ctx.wizard.state);\n  var offer = ctx.wizard.state;\n  var user = ctx.update.callback_query.from;\n  var actionPhrase = getActionPhrase(transactionType);\n  var cityWord = getCityWord(city);\n  var invalid = !amount || !currency || !rate || !cityWord;\n  if (!invalid) {\n    (0, _firebaseHelper.storeOffer)(user, offer);\n    var partnerWord = action === SELL ? 'покупателя' : 'продавца';\n    var actionWord = action === SELL ? 'продать' : 'купить';\n    ctx.reply(\"\\u0418\\u0442\\u0430\\u043A, \\u0432\\u044B \\u0433\\u043E\\u0442\\u043E\\u0432\\u044B \" + actionWord + \":\\n\" + (amount + \" \" + currency + \" \\u043F\\u043E \\u043A\\u0443\\u0440\\u0441\\u0443 \" + rate + \" \" + currency + \"-\" + BYN + \" \\u0432 \\u0433\\u043E\\u0440\\u043E\\u0434\\u0435 \" + cityWord + \".\\n\\n\") + (\"\\u041A\\u0430\\u043A \\u0442\\u043E\\u043B\\u044C\\u043A\\u043E \\u043D\\u0430\\u0439\\u0434\\u0443 \\u0432\\u0430\\u043C \" + partnerWord + \", \\u0441\\u043E\\u043E\\u0431\\u0449\\u0443 \\uD83D\\uDC30\"), _markup2.default.inlineKeyboard([_markup2.default.callbackButton(\"Начать новый обмен  ↩️\", \"back\")]).extra());\n    return ctx.scene.leave();\n  }\n  return ctx.scene.reenter();\n});\nvar stage = new _stage2.default([offerWizard]);\n\nfunction saveUser(ctx) {\n  var user = ctx.update.message.from;\n  var processedUser = processTelegramUser(user);\n  if (!processedUser.isBot) {\n    (0, _firebaseHelper.storeUser)(processedUser);\n  }\n}\n\nfunction botInit() {\n  var _this = this;\n\n  // Scene registration\n  bot.use(new _telegrafSessionLocal2.default({ database: '.data/telegraf_db.json' }).middleware());\n  // bot.use(session());\n  bot.use(stage.middleware());\n  bot.start(function () {\n    var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(ctx) {\n      return regeneratorRuntime.wrap(function _callee$(_context) {\n        while (1) {\n          switch (_context.prev = _context.next) {\n            case 0:\n              saveUser(ctx);\n              ctx.scene.enter(\"offer\");\n\n            case 2:\n            case \"end\":\n              return _context.stop();\n          }\n        }\n      }, _callee, _this);\n    }));\n\n    return function (_x) {\n      return _ref.apply(this, arguments);\n    };\n  }());\n  bot.action(\"back\", function (ctx) {\n    ctx.scene.enter(\"offer\");\n  });\n\n  //   bot.on(\"callback_query\", ctx => {\n  //     const cbQuery = ctx.update.callback_query;\n  //     console.log(cbQuery);\n  //     const action = cbQuery.data;\n  //     const msg = cbQuery.message;\n  //     const opts = {\n  //       chat_id: msg.chat.id,\n  //       message_id: msg.message_id\n  //     };\n  //     let text;\n\n  //     switch (action) {\n  //       case \"buy_eur_100\":\n  //         text = \"Вы выбрали купить €100\";\n  //         break;\n  //       case BUY_EUR:\n  //         text = \"Вы выбрали купить EUR\";\n  //         buyEUR(ctx);\n  //         break;\n  //     }\n  //     console.log(action);\n  //     // if (text) ctx.editMessageText(text, opts);\n  //     if (text) ctx.reply(text);\n  //   });\n\n  bot.help(function (ctx) {\n    return ctx.reply(\"Send me a sticker\");\n  });\n  bot.on(\"sticker\", function (ctx) {\n    return ctx.reply(\"👍\");\n  });\n  bot.hears(\"hi\", function (ctx) {\n    return ctx.reply(\"Hey there\");\n  });\n  bot.launch();\n}\n//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInRlbGVncmFtSGVscGVyLmpzIl0sIm5hbWVzIjpbImJvdEluaXQiLCJCVVkiLCJTRUxMIiwiVVNEIiwiRVVSIiwiQllOIiwiQlVZX1VTRCIsIkJVWV9FVVIiLCJTRUxMX1VTRCIsIlNFTExfRVVSIiwiTUlOU0siLCJHUk9ETk8iLCJCT0JSVVlTSyIsIkJBUkFOT1ZJQ0hJIiwiTUlOU0tfV09SRCIsIkdST0ROT19XT1JEIiwiQk9CUlVZU0tfV09SRCIsIkJBUkFOT1ZJQ0hJX1dPUkQiLCJCVVlfVVNEX1dPUkQiLCJCVVlfRVVSX1dPUkQiLCJTRUxMX1VTRF9XT1JEIiwiU0VMTF9FVVJfV09SRCIsImdldENpdHlXb3JkIiwiY2l0eSIsIndvcmQiLCJnZXRBY3Rpb25QaHJhc2UiLCJhY3Rpb24iLCJwcm9jZXNzVGVsZWdyYW1Vc2VyIiwidXNlciIsImlkIiwiaXNCb3QiLCJpc19ib3QiLCJmaXJzdE5hbWUiLCJmaXJzdF9uYW1lIiwibGFzdE5hbWUiLCJsYXN0X25hbWUiLCJ1c2VybmFtZSIsImxhbmdDb2RlIiwibGFuZ3VhZ2VfY29kZSIsImluaXRpYWxNZW51IiwiTWFya3VwIiwiaW5saW5lS2V5Ym9hcmQiLCJjYWxsYmFja0J1dHRvbiIsImV4dHJhIiwiYm90IiwiVGVsZWdyYWYiLCJwcm9jZXNzIiwiZW52IiwiVEVMRUdSQU1fQVBJX0tFWSIsImNpdGllc0J1dHRvbnMiLCJvZmZlcldpemFyZCIsIldpemFyZFNjZW5lIiwic2F2ZVVzZXIiLCJjdHgiLCJyZXBseSIsIndpemFyZCIsIm5leHQiLCJjb25zb2xlIiwibG9nIiwidXBkYXRlIiwiY2FsbGJhY2tfcXVlcnkiLCJfIiwiZ2V0Iiwic2NlbmUiLCJyZWVudGVyIiwiY2hvaWNlIiwiZGF0YSIsImN1cnJlbmN5Iiwic3BsaXQiLCJjaG9zZW5BY3Rpb24iLCJzdGF0ZSIsImN1cnJlbmN5U291cmNlIiwiY3VycmVuY3lEZXN0aW5hdGlvbiIsInRyYW5zYWN0aW9uVHlwZSIsInBocmFzZSIsImFtb3VudCIsIm1lc3NhZ2UiLCJ0ZXh0IiwicmF0ZSIsIm9mZmVyIiwiZnJvbSIsImFjdGlvblBocmFzZSIsImNpdHlXb3JkIiwiaW52YWxpZCIsInBhcnRuZXJXb3JkIiwiYWN0aW9uV29yZCIsImxlYXZlIiwic3RhZ2UiLCJTdGFnZSIsInByb2Nlc3NlZFVzZXIiLCJ1c2UiLCJMb2NhbFNlc3Npb24iLCJkYXRhYmFzZSIsIm1pZGRsZXdhcmUiLCJzdGFydCIsImVudGVyIiwiaGVscCIsIm9uIiwiaGVhcnMiLCJsYXVuY2giXSwibWFwcGluZ3MiOiI7Ozs7O1FBb05nQkEsTyxHQUFBQSxPOztBQXBOaEI7Ozs7QUFDQTs7OztBQUNBOzs7O0FBQ0E7Ozs7QUFDQTs7OztBQUNBOztBQUNBOzs7O0FBQ0E7Ozs7Ozs7O0FBRUEsSUFBTUMsTUFBTSxLQUFaO0FBQ0EsSUFBTUMsT0FBTyxNQUFiO0FBQ0EsSUFBTUMsTUFBTSxLQUFaO0FBQ0EsSUFBTUMsTUFBTSxLQUFaO0FBQ0EsSUFBTUMsTUFBTSxLQUFaO0FBQ0EsSUFBTUMsVUFBYUwsR0FBYixTQUFvQkUsR0FBMUI7QUFDQSxJQUFNSSxVQUFhTixHQUFiLFNBQW9CRyxHQUExQjtBQUNBLElBQU1JLFdBQWNOLElBQWQsU0FBc0JDLEdBQTVCO0FBQ0EsSUFBTU0sV0FBY1AsSUFBZCxTQUFzQkUsR0FBNUI7QUFDQSxJQUFNTSxRQUFRLE9BQWQ7QUFDQSxJQUFNQyxTQUFTLFFBQWY7QUFDQSxJQUFNQyxXQUFXLFVBQWpCO0FBQ0EsSUFBTUMsY0FBYyxhQUFwQjs7QUFFQSxJQUFNQyxhQUFhLE9BQW5CO0FBQ0EsSUFBTUMsY0FBYyxRQUFwQjtBQUNBLElBQU1DLGdCQUFnQixVQUF0QjtBQUNBLElBQU1DLG1CQUFtQixZQUF6Qjs7QUFHQSxJQUFNQyxlQUFlLFlBQXJCO0FBQ0EsSUFBTUMsZUFBZSxZQUFyQjtBQUNBLElBQU1DLGdCQUFnQixhQUF0QjtBQUNBLElBQU1DLGdCQUFnQixhQUF0Qjs7QUFFQSxTQUFTQyxXQUFULENBQXFCQyxJQUFyQixFQUEyQjtBQUN6QixNQUFJ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QUFVLGlCQUFNekMsR0FBTjtBQUFBO0FBQUE7QUFBQTtBQUFBO0FBQ1JELHVCQUFTQyxHQUFUO0FBQ0FBLGtCQUFJVSxLQUFKLENBQVVnQyxLQUFWLENBQWdCLE9BQWhCOztBQUZRO0FBQUE7QUFBQTtBQUFBO0FBQUE7QUFBQTtBQUFBLEtBQVY7O0FBQUE7QUFBQTtBQUFBO0FBQUE7QUFJQW5ELE1BQUlsQixNQUFKLENBQVcsTUFBWCxFQUFtQixlQUFPO0FBQ3hCMkIsUUFBSVUsS0FBSixDQUFVZ0MsS0FBVixDQUFnQixPQUFoQjtBQUNELEdBRkQ7O0FBSUY7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7O0FBRUE7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7O0FBRUVuRCxNQUFJb0QsSUFBSixDQUFTO0FBQUEsV0FBTzNDLElBQUlDLEtBQUosQ0FBVSxtQkFBVixDQUFQO0FBQUEsR0FBVDtBQUNBVixNQUFJcUQsRUFBSixDQUFPLFNBQVAsRUFBa0I7QUFBQSxXQUFPNUMsSUFBSUMsS0FBSixDQUFVLElBQVYsQ0FBUDtBQUFBLEdBQWxCO0FBQ0FWLE1BQUlzRCxLQUFKLENBQVUsSUFBVixFQUFnQjtBQUFBLFdBQU83QyxJQUFJQyxLQUFKLENBQVUsV0FBVixDQUFQO0FBQUEsR0FBaEI7QUFDQVYsTUFBSXVELE1BQUo7QUFDRCIsImZpbGUiOiJ0ZWxlZ3JhbUhlbHBlci5qcyIsInNvdXJjZVJvb3QiOiIvYXBwL2hlbHBlcnMiLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQgVGVsZWdyYWYgZnJvbSBcInRlbGVncmFmXCI7XG5pbXBvcnQgTWFya3VwIGZyb20gXCJ0ZWxlZ3JhZi9tYXJrdXBcIjtcbmltcG9ydCBTdGFnZSBmcm9tIFwidGVsZWdyYWYvc3RhZ2VcIjtcbmltcG9ydCBzZXNzaW9uIGZyb20gXCJ0ZWxlZ3JhZi9zZXNzaW9uXCI7XG5pbXBvcnQgV2l6YXJkU2NlbmUgZnJvbSBcInRlbGVncmFmL3NjZW5lcy93aXphcmRcIjtcbmltcG9ydCB7IHN0b3JlVXNlciwgc3RvcmVPZmZlciB9IGZyb20gXCIuL2ZpcmViYXNlSGVscGVyXCI7XG5pbXBvcnQgTG9jYWxTZXNzaW9uIGZyb20gXCJ0ZWxlZ3JhZi1zZXNzaW9uLWxvY2FsXCI7XG5pbXBvcnQgXyBmcm9tICdsb2Rhc2gnO1xuXG5jb25zdCBCVVkgPSBcIkJVWVwiO1xuY29uc3QgU0VMTCA9IFwiU0VMTFwiO1xuY29uc3QgVVNEID0gXCJVU0RcIjtcbmNvbnN0IEVVUiA9IFwiRVVSXCI7XG5jb25zdCBCWU4gPSBcIkJZTlwiO1xuY29uc3QgQlVZX1VTRCA9IGAke0JVWX1fJHtVU0R9YDtcbmNvbnN0IEJVWV9FVVIgPSBgJHtCVVl9XyR7RVVSfWA7XG5jb25zdCBTRUxMX1VTRCA9IGAke1NFTEx9XyR7VVNEfWA7XG5jb25zdCBTRUxMX0VVUiA9IGAke1NFTEx9XyR7RVVSfWA7XG5jb25zdCBNSU5TSyA9IFwiTUlOU0tcIjtcbmNvbnN0IEdST0ROTyA9IFwiR1JPRE5PXCI7XG5jb25zdCBCT0JSVVlTSyA9IFwiQk9CUlVZU0tcIjtcbmNvbnN0IEJBUkFOT1ZJQ0hJID0gXCJCQVJBTk9WSUNISVwiO1xuXG5jb25zdCBNSU5TS19XT1JEID0gXCLQnNC40L3RgdC6XCI7XG5jb25zdCBHUk9ETk9fV09SRCA9IFwi0JPRgNC+0LTQvdC+XCI7XG5jb25zdCBCT0JSVVlTS19XT1JEID0gXCLQkdC+0LHRgNGD0LnRgdC6XCI7XG5jb25zdCBCQVJBTk9WSUNISV9XT1JEID0gXCLQkdCw0YDQsNC90L7QstC40YfQuFwiO1xuXG5cbmNvbnN0IEJVWV9VU0RfV09SRCA9IFwi0LrRg9C/0LjRgtGMIFVTRFwiO1xuY29uc3QgQlVZX0VVUl9XT1JEID0gXCLQutGD0L/QuNGC0YwgRVVSXCI7XG5jb25zdCBTRUxMX1VTRF9XT1JEID0gXCLQv9GA0L7QtNCw0YLRjCBVU0RcIjtcbmNvbnN0IFNFTExfRVVSX1dPUkQgPSBcItC/0YDQvtC00LDRgtGMIEVVUlwiO1xuXG5mdW5jdGlvbiBnZXRDaXR5V29yZChjaXR5KSB7XG4gIGxldCB3b3JkO1xuICBzd2l0Y2ggKGNpdHkpIHtcbiAgICBjYXNlIE1JTlNLOlxuICAgICAgd29yZCA9IE1JTlNLX1dPUkQ7XG4gICAgICBicmVhaztcbiAgICBjYXNlIEdST0ROTzpcbiAgICAgIHdvcmQgPSBHUk9ETk9fV09SRDtcbiAgICAgIGJyZWFrO1xuICAgIGNhc2UgQk9CUlVZU0s6XG4gICAgICB3b3JkID0gQk9CUlVZU0tfV09SRDtcbiAgICAgIGJyZWFrO1xuICAgIGNhc2UgQkFSQU5PVklDSEk6XG4gICAgICB3b3JkID0gQkFSQU5PVklDSElfV09SRDtcbiAgICAgIGJyZWFrO1xuICB9XG4gIHJldHVybiB3b3JkO1xufVxuXG5mdW5jdGlvbiBnZXRBY3Rpb25QaHJhc2UoYWN0aW9uKSB7XG4gIGxldCB3b3JkO1xuICBzd2l0Y2ggKGFjdGlvbikge1xuICAgIGNhc2UgQlVZX1VTRDpcbiAgICAgIHdvcmQgPSBCVVlfVVNEX1dPUkQ7XG4gICAgICBicmVhaztcbiAgICBjYXNlIEJVWV9FVVI6XG4gICAgICB3b3JkID0gQlVZX0VVUl9XT1JEO1xuICAgICAgYnJlYWs7XG4gICAgY2FzZSBTRUxMX1VTRDpcbiAgICAgIHdvcmQgPSBTRUxMX1VTRF9XT1JEO1xuICAgICAgYnJlYWs7XG4gICAgY2FzZSBTRUxMX0VVUjpcbiAgICAgIHdvcmQgPSBTRUxMX0VVUl9XT1JEO1xuICAgICAgYnJlYWs7XG4gIH1cbiAgcmV0dXJuIHdvcmQ7XG59XG5cbmZ1bmN0aW9uIHByb2Nlc3NUZWxlZ3JhbVVzZXIodXNlcikge1xuICByZXR1cm4ge1xuICAgIGlkOiB1c2VyLmlkLFxuICAgIGlzQm90OiB1c2VyLmlzX2JvdCxcbiAgICBmaXJzdE5hbWU6IHVzZXIuZmlyc3RfbmFtZSxcbiAgICBsYXN0TmFtZTogdXNlci5sYXN0X25hbWUsXG4gICAgdXNlcm5hbWU6IHVzZXIudXNlcm5hbWUsXG4gICAgbGFuZ0NvZGU6IHVzZXIubGFuZ3VhZ2VfY29kZVxuICB9O1xufVxuXG5jb25zdCBpbml0aWFsTWVudSA9IE1hcmt1cC5pbmxpbmVLZXlib2FyZChbXG4gIFtcbiAgICBNYXJrdXAuY2FsbGJhY2tCdXR0b24oYCR7QlVZX1VTRF9XT1JEfSAkYCwgQlVZX1VTRCksXG4gICAgTWFya3VwLmNhbGxiYWNrQnV0dG9uKGAke0JVWV9FVVJfV09SRH0g4oKsYCwgQlVZX0VVUilcbiAgXSxcbiAgW1xuICAgIE1hcmt1cC5jYWxsYmFja0J1dHRvbihgJHtTRUxMX1VTRF9XT1JEfSAkYCwgU0VMTF9VU0QpLFxuICAgIE1hcmt1cC5jYWxsYmFja0J1dHRvbihgJHtTRUxMX0VVUl9XT1JEfSDigqxgLCBTRUxMX0VVUilcbiAgXVxuXSkuZXh0cmEoKTtcblxuY29uc3QgYm90ID0gbmV3IFRlbGVncmFmKHByb2Nlc3MuZW52LlRFTEVHUkFNX0FQSV9LRVkpO1xuXG5jb25zdCBjaXRpZXNCdXR0b25zID0gTWFya3VwLmlubGluZUtleWJvYXJkKFtcbiAgW1xuICAgIE1hcmt1cC5jYWxsYmFja0J1dHRvbihNSU5TS19XT1JELCBNSU5TSyksXG4gICAgTWFya3VwLmNhbGxiYWNrQnV0dG9uKEdST0ROT19XT1JELCBHUk9ETk8pXG4gIF0sXG4gIFtcbiAgICBNYXJrdXAuY2FsbGJhY2tCdXR0b24oQk9CUlVZU0tfV09SRCwgQk9CUlVZU0spLFxuICAgIE1hcmt1cC5jYWxsYmFja0J1dHRvbihCQVJBTk9WSUNISV9XT1JELCBCQVJBTk9WSUNISSksXG4gIF1cbl0pLmV4dHJhKCk7XG5cbmNvbnN0IG9mZmVyV2l6YXJkID0gbmV3IFdpemFyZFNjZW5lKFxuICBcIm9mZmVyXCIsXG4gIGN0eCA9PiB7XG4gICAgLy8gY29uc29sZS5sb2coJ2N0eCcsY3R4KVxuICAgIHNhdmVVc2VyKGN0eCk7XG4gICAgY3R4LnJlcGx5KFwi0J/RgNC40LLQtdGCLiDQp9GC0L4g0LHRg9C00LXQvCDQtNC10LvQsNGC0Yw/IPCfkLBcIiwgaW5pdGlhbE1lbnUpO1xuICAgIHJldHVybiBjdHgud2l6YXJkLm5leHQoKTtcbiAgfSxcbiAgY3R4ID0+IHtcbiAgICBjb25zb2xlLmxvZygnY3R4LnVwZGF0ZScsY3R4LnVwZGF0ZSlcbiAgICBpZiAoIWN0eC51cGRhdGUuY2FsbGJhY2tfcXVlcnkgfHwgXy5nZXQoY3R4LCAndXBkYXRlLm1lc3NhZ2UudGV4dCcpID09PSAnL3N0YXJ0Jykge1xuICAgICAgY3R4LnNjZW5lLnJlZW50ZXIoKVxuICAgICAgcmV0dXJuXG4gICAgfVxuICAgIGNvbnN0IGNob2ljZSA9IGN0eC51cGRhdGUuY2FsbGJhY2tfcXVlcnkuZGF0YTtcbiAgICBpZiAoY2hvaWNlKSB7XG4gICAgICBjb25zdCBjdXJyZW5jeSA9IGNob2ljZS5zcGxpdCgnXycpWzFdXG4gICAgICBjb25zdCBjaG9zZW5BY3Rpb24gPSBjaG9pY2Uuc3BsaXQoJ18nKVswXVxuICAgICAgY3R4LndpemFyZC5zdGF0ZS5jdXJyZW5jeVNvdXJjZSA9IGNob3NlbkFjdGlvbiA9PT0gQlVZID8gQllOIDogY3VycmVuY3lcbiAgICAgIGN0eC53aXphcmQuc3RhdGUuY3VycmVuY3lEZXN0aW5hdGlvbiA9IGNob3NlbkFjdGlvbiA9PT0gU0VMTCA/IEJZTiA6IGN1cnJlbmN5O1xuICAgICAgY3R4LndpemFyZC5zdGF0ZS5hY3Rpb24gPSBjaG9zZW5BY3Rpb247XG4gICAgICBjdHgud2l6YXJkLnN0YXRlLnRyYW5zYWN0aW9uVHlwZSA9IGNob2ljZTtcbiAgICAgIGlmIChjdXJyZW5jeSkge1xuICAgICAgICBsZXQgcGhyYXNlID0gZ2V0QWN0aW9uUGhyYXNlKGNob2ljZSk7XG4gICAgICAgIGlmIChwaHJhc2UpIHtcbiAgICAgICAgICBjdHgucmVwbHkoXG4gICAgICAgICAgICBg0J/QvtC90Y/RgtC90L4sICR7cGhyYXNlfS4g0KHQutC+0LvRjNC60L4gJHtjdXJyZW5jeX0/YFxuICAgICAgICAgICk7XG4gICAgICAgICAgcmV0dXJuIGN0eC53aXphcmQubmV4dCgpO1xuICAgICAgICB9XG4gICAgICB9XG4gICAgfVxuICB9LFxuICBjdHggPT4ge1xuICAgIGNvbnNvbGUubG9nKCdjdHgudXBkYXRlJyxjdHgudXBkYXRlKVxuICAgIGlmIChjdHgudXBkYXRlLmNhbGxiYWNrX3F1ZXJ5IHx8IF8uZ2V0KGN0eCwgJ3VwZGF0ZS5tZXNzYWdlLnRleHQnKSA9PT0gJy9zdGFydCcpIHtcbiAgICAgIHJldHVybiBjdHguc2NlbmUucmVlbnRlcigpXG4gICAgfVxuICAgIGN0eC53aXphcmQuc3RhdGUuYW1vdW50ID0gY3R4Lm1lc3NhZ2UudGV4dDtcbiAgICBjb25zdCB7YW1vdW50LCBjdXJyZW5jeVNvdXJjZSwgY3VycmVuY3lEZXN0aW5hdGlvbiwgYWN0aW9ufSA9IGN0eC53aXphcmQuc3RhdGU7XG4gICAgY29uc3QgY3VycmVuY3kgPSBhY3Rpb24gPT09IFNFTEwgPyBjdXJyZW5jeVNvdXJjZSA6IGN1cnJlbmN5RGVzdGluYXRpb247XG4gICAgY3R4LnJlcGx5KFxuICAgICAgYPCfkLAg0J7Qui4gJHthbW91bnR9ICR7Y3VycmVuY3l9LiDQn9C+INC60LDQutC+0LzRgyDQutGD0YDRgdGDP2BcbiAgICApO1xuICAgIHJldHVybiBjdHgud2l6YXJkLm5leHQoKTtcbiAgfSxcbiAgY3R4ID0+IHtcbiAgICBjb25zb2xlLmxvZygnY3R4LnVwZGF0ZScsY3R4LnVwZGF0ZSlcbiAgICBpZiAoY3R4LnVwZGF0ZS5jYWxsYmFja19xdWVyeSB8fCBfLmdldChjdHgsICd1cGRhdGUubWVzc2FnZS50ZXh0JykgPT09ICcvc3RhcnQnKSB7XG4gICAgICBjdHguc2NlbmUucmVlbnRlcigpXG4gICAgICByZXR1cm5cbiAgICB9XG4gICAgY3R4LndpemFyZC5zdGF0ZS5yYXRlID0gY3R4Lm1lc3NhZ2UudGV4dDtcbiAgICBjb25zdCB7YW1vdW50LCBjdXJyZW5jeVNvdXJjZSwgY3VycmVuY3lEZXN0aW5hdGlvbiwgYWN0aW9ufSA9IGN0eC53aXphcmQuc3RhdGU7XG4gICAgY29uc3QgY3VycmVuY3kgPSBhY3Rpb24gPT09IFNFTEwgPyBjdXJyZW5jeVNvdXJjZSA6IGN1cnJlbmN5RGVzdGluYXRpb247XG5cbiAgICBjdHgucmVwbHkoXG4gICAgICBg0J/QvtC90Y/RgtC90L4uICR7Y3R4LndpemFyZC5zdGF0ZS5yYXRlfSAke2N1cnJlbmN5fS0ke0JZTn0uXFxuYCBcbiAgICAgICsgYNCSINC60LDQutC+0Lwg0LPQvtGA0L7QtNC1INCy0Ysg0LzQvtC20LXRgtC1INCy0YHRgtGA0LXRgtC40YLRgdGPP2AsXG4gICAgICBjaXRpZXNCdXR0b25zXG4gICAgKTtcbiAgICByZXR1cm4gY3R4LndpemFyZC5uZXh0KCk7XG4gIH0sXG4gIGN0eCA9PiB7XG4gICAgY29uc29sZS5sb2coJ2N0eC51cGRhdGUnLGN0eC51cGRhdGUpXG4gICAgaWYgKCFjdHgudXBkYXRlLmNhbGxiYWNrX3F1ZXJ5IHx8IF8uZ2V0KGN0eCwgJ3VwZGF0ZS5tZXNzYWdlLnRleHQnKSA9PT0gJy9zdGFydCcpIHtcbiAgICAgIGN0eC5zY2VuZS5yZWVudGVyKClcbiAgICAgIHJldHVyblxuICAgIH1cbiAgICBjdHgud2l6YXJkLnN0YXRlLmNpdHkgPSBjdHgudXBkYXRlLmNhbGxiYWNrX3F1ZXJ5LmRhdGE7XG4gICAgY29uc3Qge2N1cnJlbmN5U291cmNlLCBjdXJyZW5jeURlc3RpbmF0aW9uLCByYXRlLCBhbW91bnQsIGFjdGlvbiwgdHJhbnNhY3Rpb25UeXBlLCBjaXR5fSA9IGN0eC53aXphcmQuc3RhdGU7XG4gICAgY29uc3QgY3VycmVuY3kgPSBhY3Rpb24gPT09IFNFTEwgPyBjdXJyZW5jeVNvdXJjZSA6IGN1cnJlbmN5RGVzdGluYXRpb247XG4gICAgY29uc29sZS5sb2coXCJjdHgud2l6YXJkLnN0YXRlXCIsIGN0eC53aXphcmQuc3RhdGUpXG4gICAgY29uc3Qgb2ZmZXIgPSBjdHgud2l6YXJkLnN0YXRlO1xuICAgIGNvbnN0IHVzZXIgPSBjdHgudXBkYXRlLmNhbGxiYWNrX3F1ZXJ5LmZyb207XG4gICAgY29uc3QgYWN0aW9uUGhyYXNlID0gZ2V0QWN0aW9uUGhyYXNlKHRyYW5zYWN0aW9uVHlwZSk7XG4gICAgY29uc3QgY2l0eVdvcmQgPSBnZXRDaXR5V29yZChjaXR5KTtcbiAgICBjb25zdCBpbnZhbGlkID0gIWFtb3VudCB8fCAhY3VycmVuY3kgfHwgIXJhdGUgfHwgIWNpdHlXb3JkO1xuICAgIGlmICghaW52YWxpZCkge1xuICAgICAgc3RvcmVPZmZlcih1c2VyLCBvZmZlcilcbiAgICAgIGNvbnN0IHBhcnRuZXJXb3JkID0gYWN0aW9uID09PSBTRUxMID8gJ9C/0L7QutGD0L/QsNGC0LXQu9GPJyA6ICfQv9GA0L7QtNCw0LLRhtCwJztcbiAgICAgIGNvbnN0IGFjdGlvbldvcmQgPSBhY3Rpb24gPT09IFNFTEwgPyAn0L/RgNC+0LTQsNGC0YwnIDogJ9C60YPQv9C40YLRjCc7XG4gICAgICBjdHgucmVwbHkoXG4gICAgICAgIGDQmNGC0LDQuiwg0LLRiyDQs9C+0YLQvtCy0YsgJHthY3Rpb25Xb3JkfTpcXG5gIFxuICAgICAgICArIGAke2Ftb3VudH0gJHtjdXJyZW5jeX0g0L/QviDQutGD0YDRgdGDICR7cmF0ZX0gJHtjdXJyZW5jeX0tJHtCWU59INCyINCz0L7RgNC+0LTQtSAke2NpdHlXb3JkfS5cXG5cXG5gXG4gICAgICAgICsgYNCa0LDQuiDRgtC+0LvRjNC60L4g0L3QsNC50LTRgyDQstCw0LwgJHtwYXJ0bmVyV29yZH0sINGB0L7QvtCx0YnRgyDwn5CwYCxcbiAgICAgICAgTWFya3VwLmlubGluZUtleWJvYXJkKFtcbiAgICAgICAgICBNYXJrdXAuY2FsbGJhY2tCdXR0b24oXCLQndCw0YfQsNGC0Ywg0L3QvtCy0YvQuSDQvtCx0LzQtdC9ICDihqnvuI9cIiwgXCJiYWNrXCIpLFxuICAgICAgICBdKS5leHRyYSgpXG4gICAgICApO1xuICAgICAgcmV0dXJuIGN0eC5zY2VuZS5sZWF2ZSgpO1xuICAgIH1cbiAgICByZXR1cm4gY3R4LnNjZW5lLnJlZW50ZXIoKVxuICB9XG4pO1xuY29uc3Qgc3RhZ2UgPSBuZXcgU3RhZ2UoW29mZmVyV2l6YXJkXSk7XG5cbmZ1bmN0aW9uIHNhdmVVc2VyKGN0eCkge1xuICBjb25zdCB1c2VyID0gY3R4LnVwZGF0ZS5tZXNzYWdlLmZyb207XG4gIGNvbnN0IHByb2Nlc3NlZFVzZXIgPSBwcm9jZXNzVGVsZWdyYW1Vc2VyKHVzZXIpO1xuICBpZiAoIXByb2Nlc3NlZFVzZXIuaXNCb3QpIHtcbiAgICBzdG9yZVVzZXIocHJvY2Vzc2VkVXNlcik7XG4gIH1cbn1cblxuZXhwb3J0IGZ1bmN0aW9uIGJvdEluaXQoKSB7XG4gICAgLy8gU2NlbmUgcmVnaXN0cmF0aW9uXG4gIGJvdC51c2UoKG5ldyBMb2NhbFNlc3Npb24oeyBkYXRhYmFzZTogJy5kYXRhL3RlbGVncmFmX2RiLmpzb24nIH0pKS5taWRkbGV3YXJlKCkpXG4gIC8vIGJvdC51c2Uoc2Vzc2lvbigpKTtcbiAgYm90LnVzZShzdGFnZS5taWRkbGV3YXJlKCkpO1xuICBib3Quc3RhcnQoYXN5bmMgY3R4ID0+IHtcbiAgICBzYXZlVXNlcihjdHgpO1xuICAgIGN0eC5zY2VuZS5lbnRlcihcIm9mZmVyXCIpO1xuICB9KTtcbiAgYm90LmFjdGlvbihcImJhY2tcIiwgY3R4ID0+IHtcbiAgICBjdHguc2NlbmUuZW50ZXIoXCJvZmZlclwiKTtcbiAgfSk7XG5cbi8vICAgYm90Lm9uKFwiY2FsbGJhY2tfcXVlcnlcIiwgY3R4ID0+IHtcbi8vICAgICBjb25zdCBjYlF1ZXJ5ID0gY3R4LnVwZGF0ZS5jYWxsYmFja19xdWVyeTtcbi8vICAgICBjb25zb2xlLmxvZyhjYlF1ZXJ5KTtcbi8vICAgICBjb25zdCBhY3Rpb24gPSBjYlF1ZXJ5LmRhdGE7XG4vLyAgICAgY29uc3QgbXNnID0gY2JRdWVyeS5tZXNzYWdlO1xuLy8gICAgIGNvbnN0IG9wdHMgPSB7XG4vLyAgICAgICBjaGF0X2lkOiBtc2cuY2hhdC5pZCxcbi8vICAgICAgIG1lc3NhZ2VfaWQ6IG1zZy5tZXNzYWdlX2lkXG4vLyAgICAgfTtcbi8vICAgICBsZXQgdGV4dDtcblxuLy8gICAgIHN3aXRjaCAoYWN0aW9uKSB7XG4vLyAgICAgICBjYXNlIFwiYnV5X2V1cl8xMDBcIjpcbi8vICAgICAgICAgdGV4dCA9IFwi0JLRiyDQstGL0LHRgNCw0LvQuCDQutGD0L/QuNGC0Ywg4oKsMTAwXCI7XG4vLyAgICAgICAgIGJyZWFrO1xuLy8gICAgICAgY2FzZSBCVVlfRVVSOlxuLy8gICAgICAgICB0ZXh0ID0gXCLQktGLINCy0YvQsdGA0LDQu9C4INC60YPQv9C40YLRjCBFVVJcIjtcbi8vICAgICAgICAgYnV5RVVSKGN0eCk7XG4vLyAgICAgICAgIGJyZWFrO1xuLy8gICAgIH1cbi8vICAgICBjb25zb2xlLmxvZyhhY3Rpb24pO1xuLy8gICAgIC8vIGlmICh0ZXh0KSBjdHguZWRpdE1lc3NhZ2VUZXh0KHRleHQsIG9wdHMpO1xuLy8gICAgIGlmICh0ZXh0KSBjdHgucmVwbHkodGV4dCk7XG4vLyAgIH0pO1xuXG4gIGJvdC5oZWxwKGN0eCA9PiBjdHgucmVwbHkoXCJTZW5kIG1lIGEgc3RpY2tlclwiKSk7XG4gIGJvdC5vbihcInN0aWNrZXJcIiwgY3R4ID0+IGN0eC5yZXBseShcIvCfkY1cIikpO1xuICBib3QuaGVhcnMoXCJoaVwiLCBjdHggPT4gY3R4LnJlcGx5KFwiSGV5IHRoZXJlXCIpKTtcbiAgYm90LmxhdW5jaCgpO1xufVxuIl19",
+    "ast": null,
+    "map": {
+      "version": 3,
+      "sources": [
+        "telegramHelper.js"
+      ],
+      "names": [
+        "botInit",
+        "BUY",
+        "SELL",
+        "USD",
+        "EUR",
+        "BYN",
+        "BUY_USD",
+        "BUY_EUR",
+        "SELL_USD",
+        "SELL_EUR",
+        "MINSK",
+        "GRODNO",
+        "BOBRUYSK",
+        "BARANOVICHI",
+        "MINSK_WORD",
+        "GRODNO_WORD",
+        "BOBRUYSK_WORD",
+        "BARANOVICHI_WORD",
+        "BUY_USD_WORD",
+        "BUY_EUR_WORD",
+        "SELL_USD_WORD",
+        "SELL_EUR_WORD",
+        "getCityWord",
+        "city",
+        "word",
+        "getActionPhrase",
+        "action",
+        "processTelegramUser",
+        "user",
+        "id",
+        "isBot",
+        "is_bot",
+        "firstName",
+        "first_name",
+        "lastName",
+        "last_name",
+        "username",
+        "langCode",
+        "language_code",
+        "initialMenu",
+        "Markup",
+        "inlineKeyboard",
+        "callbackButton",
+        "extra",
+        "bot",
+        "Telegraf",
+        "process",
+        "env",
+        "TELEGRAM_API_KEY",
+        "citiesButtons",
+        "offerWizard",
+        "WizardScene",
+        "saveUser",
+        "ctx",
+        "reply",
+        "wizard",
+        "next",
+        "console",
+        "log",
+        "update",
+        "callback_query",
+        "_",
+        "get",
+        "scene",
+        "reenter",
+        "choice",
+        "data",
+        "currency",
+        "split",
+        "chosenAction",
+        "state",
+        "currencySource",
+        "currencyDestination",
+        "transactionType",
+        "phrase",
+        "amount",
+        "message",
+        "text",
+        "rate",
+        "offer",
+        "from",
+        "actionPhrase",
+        "cityWord",
+        "invalid",
+        "partnerWord",
+        "actionWord",
+        "leave",
+        "stage",
+        "Stage",
+        "processedUser",
+        "use",
+        "LocalSession",
+        "database",
+        "middleware",
+        "start",
+        "enter",
+        "help",
+        "on",
+        "hears",
+        "launch"
+      ],
+      "mappings": "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",
+      "file": "telegramHelper.js",
+      "sourceRoot": "/app/helpers",
+      "sourcesContent": [
+        "import Telegraf from \"telegraf\";\nimport Markup from \"telegraf/markup\";\nimport Stage from \"telegraf/stage\";\nimport session from \"telegraf/session\";\nimport WizardScene from \"telegraf/scenes/wizard\";\nimport { storeUser, storeOffer } from \"./firebaseHelper\";\nimport LocalSession from \"telegraf-session-local\";\nimport _ from 'lodash';\n\nconst BUY = \"BUY\";\nconst SELL = \"SELL\";\nconst USD = \"USD\";\nconst EUR = \"EUR\";\nconst BYN = \"BYN\";\nconst BUY_USD = `${BUY}_${USD}`;\nconst BUY_EUR = `${BUY}_${EUR}`;\nconst SELL_USD = `${SELL}_${USD}`;\nconst SELL_EUR = `${SELL}_${EUR}`;\nconst MINSK = \"MINSK\";\nconst GRODNO = \"GRODNO\";\nconst BOBRUYSK = \"BOBRUYSK\";\nconst BARANOVICHI = \"BARANOVICHI\";\n\nconst MINSK_WORD = \"Минск\";\nconst GRODNO_WORD = \"Гродно\";\nconst BOBRUYSK_WORD = \"Бобруйск\";\nconst BARANOVICHI_WORD = \"Барановичи\";\n\n\nconst BUY_USD_WORD = \"купить USD\";\nconst BUY_EUR_WORD = \"купить EUR\";\nconst SELL_USD_WORD = \"продать USD\";\nconst SELL_EUR_WORD = \"продать EUR\";\n\nfunction getCityWord(city) {\n  let word;\n  switch (city) {\n    case MINSK:\n      word = MINSK_WORD;\n      break;\n    case GRODNO:\n      word = GRODNO_WORD;\n      break;\n    case BOBRUYSK:\n      word = BOBRUYSK_WORD;\n      break;\n    case BARANOVICHI:\n      word = BARANOVICHI_WORD;\n      break;\n  }\n  return word;\n}\n\nfunction getActionPhrase(action) {\n  let word;\n  switch (action) {\n    case BUY_USD:\n      word = BUY_USD_WORD;\n      break;\n    case BUY_EUR:\n      word = BUY_EUR_WORD;\n      break;\n    case SELL_USD:\n      word = SELL_USD_WORD;\n      break;\n    case SELL_EUR:\n      word = SELL_EUR_WORD;\n      break;\n  }\n  return word;\n}\n\nfunction processTelegramUser(user) {\n  return {\n    id: user.id,\n    isBot: user.is_bot,\n    firstName: user.first_name,\n    lastName: user.last_name,\n    username: user.username,\n    langCode: user.language_code\n  };\n}\n\nconst initialMenu = Markup.inlineKeyboard([\n  [\n    Markup.callbackButton(`${BUY_USD_WORD} $`, BUY_USD),\n    Markup.callbackButton(`${BUY_EUR_WORD} €`, BUY_EUR)\n  ],\n  [\n    Markup.callbackButton(`${SELL_USD_WORD} $`, SELL_USD),\n    Markup.callbackButton(`${SELL_EUR_WORD} €`, SELL_EUR)\n  ]\n]).extra();\n\nconst bot = new Telegraf(process.env.TELEGRAM_API_KEY);\n\nconst citiesButtons = Markup.inlineKeyboard([\n  [\n    Markup.callbackButton(MINSK_WORD, MINSK),\n    Markup.callbackButton(GRODNO_WORD, GRODNO)\n  ],\n  [\n    Markup.callbackButton(BOBRUYSK_WORD, BOBRUYSK),\n    Markup.callbackButton(BARANOVICHI_WORD, BARANOVICHI),\n  ]\n]).extra();\n\nconst offerWizard = new WizardScene(\n  \"offer\",\n  ctx => {\n    // console.log('ctx',ctx)\n    saveUser(ctx);\n    ctx.reply(\"Привет. Что будем делать? 🐰\", initialMenu);\n    return ctx.wizard.next();\n  },\n  ctx => {\n    console.log('ctx.update',ctx.update)\n    if (!ctx.update.callback_query || _.get(ctx, 'update.message.text') === '/start') {\n      ctx.scene.reenter()\n      return\n    }\n    const choice = ctx.update.callback_query.data;\n    if (choice) {\n      const currency = choice.split('_')[1]\n      const chosenAction = choice.split('_')[0]\n      ctx.wizard.state.currencySource = chosenAction === BUY ? BYN : currency\n      ctx.wizard.state.currencyDestination = chosenAction === SELL ? BYN : currency;\n      ctx.wizard.state.action = chosenAction;\n      ctx.wizard.state.transactionType = choice;\n      if (currency) {\n        let phrase = getActionPhrase(choice);\n        if (phrase) {\n          ctx.reply(\n            `Понятно, ${phrase}. Сколько ${currency}?`\n          );\n          return ctx.wizard.next();\n        }\n      }\n    }\n  },\n  ctx => {\n    console.log('ctx.update',ctx.update)\n    if (ctx.update.callback_query || _.get(ctx, 'update.message.text') === '/start') {\n      return ctx.scene.reenter()\n    }\n    ctx.wizard.state.amount = ctx.message.text;\n    const {amount, currencySource, currencyDestination, action} = ctx.wizard.state;\n    const currency = action === SELL ? currencySource : currencyDestination;\n    ctx.reply(\n      `🐰 Ок. ${amount} ${currency}. По какому курсу?`\n    );\n    return ctx.wizard.next();\n  },\n  ctx => {\n    console.log('ctx.update',ctx.update)\n    if (ctx.update.callback_query || _.get(ctx, 'update.message.text') === '/start') {\n      ctx.scene.reenter()\n      return\n    }\n    ctx.wizard.state.rate = ctx.message.text;\n    const {amount, currencySource, currencyDestination, action} = ctx.wizard.state;\n    const currency = action === SELL ? currencySource : currencyDestination;\n\n    ctx.reply(\n      `Понятно. ${ctx.wizard.state.rate} ${currency}-${BYN}.\\n` \n      + `В каком городе вы можете встретится?`,\n      citiesButtons\n    );\n    return ctx.wizard.next();\n  },\n  ctx => {\n    console.log('ctx.update',ctx.update)\n    if (!ctx.update.callback_query || _.get(ctx, 'update.message.text') === '/start') {\n      ctx.scene.reenter()\n      return\n    }\n    ctx.wizard.state.city = ctx.update.callback_query.data;\n    const {currencySource, currencyDestination, rate, amount, action, transactionType, city} = ctx.wizard.state;\n    const currency = action === SELL ? currencySource : currencyDestination;\n    console.log(\"ctx.wizard.state\", ctx.wizard.state)\n    const offer = ctx.wizard.state;\n    const user = ctx.update.callback_query.from;\n    const actionPhrase = getActionPhrase(transactionType);\n    const cityWord = getCityWord(city);\n    const invalid = !amount || !currency || !rate || !cityWord;\n    if (!invalid) {\n      storeOffer(user, offer)\n      const partnerWord = action === SELL ? 'покупателя' : 'продавца';\n      const actionWord = action === SELL ? 'продать' : 'купить';\n      ctx.reply(\n        `Итак, вы готовы ${actionWord}:\\n` \n        + `${amount} ${currency} по курсу ${rate} ${currency}-${BYN} в городе ${cityWord}.\\n\\n`\n        + `Как только найду вам ${partnerWord}, сообщу 🐰`,\n        Markup.inlineKeyboard([\n          Markup.callbackButton(\"Начать новый обмен  ↩️\", \"back\"),\n        ]).extra()\n      );\n      return ctx.scene.leave();\n    }\n    return ctx.scene.reenter()\n  }\n);\nconst stage = new Stage([offerWizard]);\n\nfunction saveUser(ctx) {\n  const user = ctx.update.message.from;\n  const processedUser = processTelegramUser(user);\n  if (!processedUser.isBot) {\n    storeUser(processedUser);\n  }\n}\n\nexport function botInit() {\n    // Scene registration\n  bot.use((new LocalSession({ database: '.data/telegraf_db.json' })).middleware())\n  // bot.use(session());\n  bot.use(stage.middleware());\n  bot.start(async ctx => {\n    saveUser(ctx);\n    ctx.scene.enter(\"offer\");\n  });\n  bot.action(\"back\", ctx => {\n    ctx.scene.enter(\"offer\");\n  });\n\n//   bot.on(\"callback_query\", ctx => {\n//     const cbQuery = ctx.update.callback_query;\n//     console.log(cbQuery);\n//     const action = cbQuery.data;\n//     const msg = cbQuery.message;\n//     const opts = {\n//       chat_id: msg.chat.id,\n//       message_id: msg.message_id\n//     };\n//     let text;\n\n//     switch (action) {\n//       case \"buy_eur_100\":\n//         text = \"Вы выбрали купить €100\";\n//         break;\n//       case BUY_EUR:\n//         text = \"Вы выбрали купить EUR\";\n//         buyEUR(ctx);\n//         break;\n//     }\n//     console.log(action);\n//     // if (text) ctx.editMessageText(text, opts);\n//     if (text) ctx.reply(text);\n//   });\n\n  bot.help(ctx => ctx.reply(\"Send me a sticker\"));\n  bot.on(\"sticker\", ctx => ctx.reply(\"👍\"));\n  bot.hears(\"hi\", ctx => ctx.reply(\"Hey there\"));\n  bot.launch();\n}\n"
+      ]
+    },
+    "mtime": 1599541846000
+  },
+  "{\"filename\":\"/app/helpers/firebaseHelper.js\",\"env\":{},\"retainLines\":false,\"highlightCode\":true,\"suppressDeprecationMessages\":false,\"presets\":[],\"plugins\":[[[],null],[[],null],[[],null],[[],null],[[],{\"loose\":false,\"spec\":false}],[[],null],[[],null],[[],{\"spec\":false}],[[],null],[[],{\"loose\":false}],[[],null],[[],null],[[],null],[[],{\"loose\":false}],[[],{\"loose\":false}],[[],null],[[],null],[[],null],[[],{\"loose\":false}],[[],null],[[],{\"loose\":false}],[[],null],[[],null],[[],{\"loose\":false}],[[],{\"async\":false,\"asyncGenerators\":false}]],\"ignore\":[],\"code\":true,\"metadata\":true,\"ast\":true,\"comments\":true,\"compact\":\"auto\",\"minified\":false,\"sourceRoot\":\"/app/helpers\",\"babelrc\":true,\"sourceType\":\"module\",\"moduleIds\":false,\"passPerPreset\":false,\"parserOpts\":false,\"generatorOpts\":false}:6.26.3": {
+    "metadata": {
+      "usedHelpers": [
+        "asyncToGenerator",
+        "extends",
+        "defineProperty",
+        "interopRequireDefault"
+      ],
+      "marked": [],
+      "modules": {
+        "imports": [
+          {
+            "source": "../.data/service-account.json",
+            "imported": [
+              "default"
+            ],
+            "specifiers": [
+              {
+                "kind": "named",
+                "imported": "default",
+                "local": "serviceAccount"
+              }
+            ]
+          },
+          {
+            "source": "firebase-admin",
+            "imported": [
+              "default"
+            ],
+            "specifiers": [
+              {
+                "kind": "named",
+                "imported": "default",
+                "local": "admin"
+              }
+            ]
+          }
+        ],
+        "exports": {
+          "exported": [
+            "storeUser",
+            "user",
+            "storeOffer",
+            "user",
+            "offer"
+          ],
+          "specifiers": [
+            {
+              "kind": "local",
+              "local": "storeUser",
+              "exported": "storeUser"
+            },
+            {
+              "kind": "local",
+              "local": "user",
+              "exported": "user"
+            },
+            {
+              "kind": "local",
+              "local": "storeOffer",
+              "exported": "storeOffer"
+            },
+            {
+              "kind": "local",
+              "local": "user",
+              "exported": "user"
+            },
+            {
+              "kind": "local",
+              "local": "offer",
+              "exported": "offer"
+            }
+          ]
+        }
+      }
+    },
+    "options": {
+      "filename": "/app/helpers/firebaseHelper.js",
+      "filenameRelative": "/app/helpers/firebaseHelper.js",
+      "env": {},
+      "retainLines": false,
+      "highlightCode": true,
+      "suppressDeprecationMessages": false,
+      "presets": [],
+      "plugins": [
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          {
+            "loose": false,
+            "spec": false
+          }
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          {
+            "spec": false
+          }
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          {
+            "loose": false
+          }
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          {
+            "loose": false
+          }
+        ],
+        [
+          [],
+          {
+            "loose": false
+          }
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          {
+            "loose": false
+          }
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          {
+            "loose": false
+          }
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          null
+        ],
+        [
+          [],
+          {
+            "loose": false
+          }
+        ],
+        [
+          [],
+          {
+            "async": false,
+            "asyncGenerators": false
+          }
+        ]
+      ],
+      "ignore": [],
+      "code": true,
+      "metadata": true,
+      "ast": false,
+      "comments": true,
+      "compact": "auto",
+      "minified": false,
+      "sourceMaps": "both",
+      "sourceMapTarget": "firebaseHelper.js",
+      "sourceFileName": "firebaseHelper.js",
+      "sourceRoot": "/app/helpers",
+      "babelrc": false,
+      "sourceType": "module",
+      "moduleRoot": "/app/helpers",
+      "moduleIds": false,
+      "passPerPreset": false,
+      "parserOpts": false,
+      "generatorOpts": false,
+      "basename": "firebaseHelper"
+    },
+    "ignored": false,
+    "code": "\"use strict\";\n\nObject.defineProperty(exports, \"__esModule\", {\n  value: true\n});\nexports.storeOffer = exports.storeUser = undefined;\n\nvar _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };\n\n// usersRef.once('value').then(snapshot => {\n//   console.log(snapshot.val());\n// })\n\n// usersRef.set({paalex: {name: 'Alex', telegramId: '@paalex505'}}, function(error) {\n//   if (error) {\n//     console.log(\"Data could not be saved.\" + error);\n//   } else {\n//     console.log(\"Data saved successfully.\");\n//   }\n// });\n// usersRef.update({paalex: {name: 'Alex', telegramId: '@paalex505'}}}\n// atomic update\n// usersRef.update({\n//   \"alanisawesome/nickname\": \"Alan The Machine\",\n//   \"gracehop/nickname\": \"Amazing Grace\"\n// });\n\nvar storeUser = exports.storeUser = function () {\n  var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(user) {\n    var userRef, snapshot;\n    return regeneratorRuntime.wrap(function _callee$(_context) {\n      while (1) {\n        switch (_context.prev = _context.next) {\n          case 0:\n            if (user) {\n              _context.next = 2;\n              break;\n            }\n\n            throw new Error('no user to save');\n\n          case 2:\n            userRef = usersRef.child(user.id);\n            _context.next = 5;\n            return userRef.once('value');\n\n          case 5:\n            snapshot = _context.sent;\n\n            console.log(snapshot.val());\n            return _context.abrupt(\"return\", new Promise(function (res, rej) {\n              if (!snapshot.val()) {\n                userRef.set(user, function (error) {\n                  if (error) {\n                    console.log(\"User could not be saved.\" + error);\n                    rej(error);\n                  } else {\n                    console.log(\"User saved successfully.\");\n                  }\n                });\n              } else {\n                userRef.update(_extends({}, user), function (error) {\n                  if (error) {\n                    console.log(\"User could not be saved.\" + error);\n                    rej(error);\n                  } else {\n                    console.log(\"User updated successfully.\");\n                  }\n                });\n              }\n            }));\n\n          case 8:\n          case \"end\":\n            return _context.stop();\n        }\n      }\n    }, _callee, this);\n  }));\n\n  return function storeUser(_x) {\n    return _ref.apply(this, arguments);\n  };\n}();\n\nvar storeOffer = exports.storeOffer = function () {\n  var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(user, offer) {\n    var action, city, offerPath, userOffersPath, offerUid, userOfferPath, offerPathWithUid;\n    return regeneratorRuntime.wrap(function _callee2$(_context2) {\n      while (1) {\n        switch (_context2.prev = _context2.next) {\n          case 0:\n            action = offer.action, city = offer.city;\n\n            if (user) {\n              _context2.next = 3;\n              break;\n            }\n\n            throw new Error('no user to save');\n\n          case 3:\n            offerPath = \"offers/\" + city + \"/\" + action;\n            userOffersPath = \"users/\" + user.id + \"/offers\";\n            offerUid = db.child(offerPath).push().key;\n            userOfferPath = userOffersPath + \"/\" + offerUid;\n            offerPathWithUid = offerPath + \"/\" + offerUid;\n            return _context2.abrupt(\"return\", new Promise(function (res, rej) {\n              var _db$update;\n\n              db.update((_db$update = {}, _defineProperty(_db$update, offerPathWithUid, offer), _defineProperty(_db$update, userOfferPath, { city: city, action: action }), _db$update), function (error) {\n                if (error) {\n                  console.log(\"User could not be saved.\" + error);\n                  rej(error);\n                } else {\n                  console.log(\"User saved successfully.\");\n                }\n              });\n            }));\n\n          case 9:\n          case \"end\":\n            return _context2.stop();\n        }\n      }\n    }, _callee2, this);\n  }));\n\n  return function storeOffer(_x2, _x3) {\n    return _ref2.apply(this, arguments);\n  };\n}();\n\nvar _serviceAccount = require(\"../.data/service-account.json\");\n\nvar _serviceAccount2 = _interopRequireDefault(_serviceAccount);\n\nvar _firebaseAdmin = require(\"firebase-admin\");\n\nvar _firebaseAdmin2 = _interopRequireDefault(_firebaseAdmin);\n\nfunction _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }\n\nfunction _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }\n\nfunction _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step(\"next\", value); }, function (err) { step(\"throw\", err); }); } } return step(\"next\"); }); }; }\n\n_firebaseAdmin2.default.initializeApp({\n  credential: _firebaseAdmin2.default.credential.cert(_serviceAccount2.default),\n  databaseURL: process.env.FIREBASE_DB_URL\n});\n\nvar db = _firebaseAdmin2.default.database().ref('server');\n\nvar usersRef = db.child(\"users\");\nvar offersRef = db.child(\"offers\");\n//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbImZpcmViYXNlSGVscGVyLmpzIl0sIm5hbWVzIjpbInVzZXIiLCJFcnJvciIsInVzZXJSZWYiLCJ1c2Vyc1JlZiIsImNoaWxkIiwiaWQiLCJvbmNlIiwic25hcHNob3QiLCJjb25zb2xlIiwibG9nIiwidmFsIiwiUHJvbWlzZSIsInJlcyIsInJlaiIsInNldCIsImVycm9yIiwidXBkYXRlIiwic3RvcmVVc2VyIiwib2ZmZXIiLCJhY3Rpb24iLCJjaXR5Iiwib2ZmZXJQYXRoIiwidXNlck9mZmVyc1BhdGgiLCJvZmZlclVpZCIsImRiIiwicHVzaCIsImtleSIsInVzZXJPZmZlclBhdGgiLCJvZmZlclBhdGhXaXRoVWlkIiwic3RvcmVPZmZlciIsImFkbWluIiwiaW5pdGlhbGl6ZUFwcCIsImNyZWRlbnRpYWwiLCJjZXJ0Iiwic2VydmljZUFjY291bnQiLCJkYXRhYmFzZVVSTCIsInByb2Nlc3MiLCJlbnYiLCJGSVJFQkFTRV9EQl9VUkwiLCJkYXRhYmFzZSIsInJlZiIsIm9mZmVyc1JlZiJdLCJtYXBwaW5ncyI6Ijs7Ozs7Ozs7O0FBYUE7QUFDQTtBQUNBOztBQUVBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBOzs7cUVBRU8saUJBQXlCQSxJQUF6QjtBQUFBO0FBQUE7QUFBQTtBQUFBO0FBQUE7QUFBQSxnQkFDQUEsSUFEQTtBQUFBO0FBQUE7QUFBQTs7QUFBQSxrQkFDWSxJQUFJQyxLQUFKLENBQVUsaUJBQVYsQ0FEWjs7QUFBQTtBQUVDQyxtQkFGRCxHQUVXQyxTQUFTQyxLQUFULENBQWVKLEtBQUtLLEVBQXBCLENBRlg7QUFBQTtBQUFBLG1CQUdrQkgsUUFBUUksSUFBUixDQUFhLE9BQWIsQ0FIbEI7O0FBQUE7QUFHQ0Msb0JBSEQ7O0FBSUxDLG9CQUFRQyxHQUFSLENBQVlGLFNBQVNHLEdBQVQsRUFBWjtBQUpLLDZDQUtFLElBQUlDLE9BQUosQ0FBWSxVQUFDQyxHQUFELEVBQU1DLEdBQU4sRUFBYztBQUMvQixrQkFBSSxDQUFDTixTQUFTRyxHQUFULEVBQUwsRUFBcUI7QUFDbkJSLHdCQUFRWSxHQUFSLENBQVlkLElBQVosRUFBa0IsVUFBU2UsS0FBVCxFQUFnQjtBQUNoQyxzQkFBSUEsS0FBSixFQUFXO0FBQ1RQLDRCQUFRQyxHQUFSLENBQVksNkJBQTZCTSxLQUF6QztBQUNBRix3QkFBSUUsS0FBSjtBQUNELG1CQUhELE1BR087QUFDTFAsNEJBQVFDLEdBQVIsQ0FBWSwwQkFBWjtBQUNEO0FBQ0YsaUJBUEQ7QUFRRCxlQVRELE1BU087QUFDTFAsd0JBQVFjLE1BQVIsY0FBbUJoQixJQUFuQixHQUEwQixVQUFTZSxLQUFULEVBQWdCO0FBQ3hDLHNCQUFJQSxLQUFKLEVBQVc7QUFDVFAsNEJBQVFDLEdBQVIsQ0FBWSw2QkFBNkJNLEtBQXpDO0FBQ0FGLHdCQUFJRSxLQUFKO0FBQ0QsbUJBSEQsTUFHTztBQUNMUCw0QkFBUUMsR0FBUixDQUFZLDRCQUFaO0FBRUQ7QUFDRixpQkFSRDtBQVNEO0FBRUYsYUF0Qk0sQ0FMRjs7QUFBQTtBQUFBO0FBQUE7QUFBQTtBQUFBO0FBQUE7QUFBQSxHOztrQkFBZVEsUzs7Ozs7O3NFQStCZixrQkFBMEJqQixJQUExQixFQUFnQ2tCLEtBQWhDO0FBQUE7QUFBQTtBQUFBO0FBQUE7QUFBQTtBQUNFQyxrQkFERixHQUNrQkQsS0FEbEIsQ0FDRUMsTUFERixFQUNVQyxJQURWLEdBQ2tCRixLQURsQixDQUNVRSxJQURWOztBQUFBLGdCQUVBcEIsSUFGQTtBQUFBO0FBQUE7QUFBQTs7QUFBQSxrQkFFWSxJQUFJQyxLQUFKLENBQVUsaUJBQVYsQ0FGWjs7QUFBQTtBQUdDb0IscUJBSEQsZUFHdUJELElBSHZCLFNBRytCRCxNQUgvQjtBQUlDRywwQkFKRCxjQUkyQnRCLEtBQUtLLEVBSmhDO0FBS0NrQixvQkFMRCxHQUtZQyxHQUFHcEIsS0FBSCxDQUFTaUIsU0FBVCxFQUFvQkksSUFBcEIsR0FBMkJDLEdBTHZDO0FBTUNDLHlCQU5ELEdBTW9CTCxjQU5wQixTQU1zQ0MsUUFOdEM7QUFPQ0ssNEJBUEQsR0FPdUJQLFNBUHZCLFNBT29DRSxRQVBwQztBQUFBLDhDQVFFLElBQUlaLE9BQUosQ0FBWSxVQUFDQyxHQUFELEVBQU1DLEdBQU4sRUFBYztBQUFBOztBQUMvQlcsaUJBQUdSLE1BQUgsK0NBQ0dZLGdCQURILEVBQ3NCVixLQUR0QiwrQkFFR1MsYUFGSCxFQUVtQixFQUFDUCxVQUFELEVBQU9ELGNBQVAsRUFGbkIsZ0JBR0UsVUFBU0osS0FBVCxFQUFnQjtBQUNoQixvQkFBSUEsS0FBSixFQUFXO0FBQ1RQLDBCQUFRQyxHQUFSLENBQVksNkJBQTZCTSxLQUF6QztBQUNBRixzQkFBSUUsS0FBSjtBQUNELGlCQUhELE1BR087QUFDTFAsMEJBQVFDLEdBQVIsQ0FBWSwwQkFBWjtBQUNEO0FBQ0YsZUFWRDtBQVdELGFBWk0sQ0FSRjs7QUFBQTtBQUFBO0FBQUE7QUFBQTtBQUFBO0FBQUE7QUFBQSxHOztrQkFBZW9CLFU7Ozs7O0FBOUR0Qjs7OztBQUNBOzs7Ozs7Ozs7O0FBRUFDLHdCQUFNQyxhQUFOLENBQW9CO0FBQ2xCQyxjQUFZRix3QkFBTUUsVUFBTixDQUFpQkMsSUFBakIsQ0FBc0JDLHdCQUF0QixDQURNO0FBRWxCQyxlQUFhQyxRQUFRQyxHQUFSLENBQVlDO0FBRlAsQ0FBcEI7O0FBS0EsSUFBSWQsS0FBS00sd0JBQU1TLFFBQU4sR0FBaUJDLEdBQWpCLENBQXFCLFFBQXJCLENBQVQ7O0FBRUEsSUFBSXJDLFdBQVdxQixHQUFHcEIsS0FBSCxDQUFTLE9BQVQsQ0FBZjtBQUNBLElBQUlxQyxZQUFZakIsR0FBR3BCLEtBQUgsQ0FBUyxRQUFULENBQWhCIiwiZmlsZSI6ImZpcmViYXNlSGVscGVyLmpzIiwic291cmNlUm9vdCI6Ii9hcHAvaGVscGVycyIsInNvdXJjZXNDb250ZW50IjpbImltcG9ydCBzZXJ2aWNlQWNjb3VudCBmcm9tIFwiLi4vLmRhdGEvc2VydmljZS1hY2NvdW50Lmpzb25cIjtcbmltcG9ydCBhZG1pbiBmcm9tIFwiZmlyZWJhc2UtYWRtaW5cIjtcblxuYWRtaW4uaW5pdGlhbGl6ZUFwcCh7XG4gIGNyZWRlbnRpYWw6IGFkbWluLmNyZWRlbnRpYWwuY2VydChzZXJ2aWNlQWNjb3VudCksXG4gIGRhdGFiYXNlVVJMOiBwcm9jZXNzLmVudi5GSVJFQkFTRV9EQl9VUkxcbn0pO1xuXG52YXIgZGIgPSBhZG1pbi5kYXRhYmFzZSgpLnJlZignc2VydmVyJyk7XG5cbnZhciB1c2Vyc1JlZiA9IGRiLmNoaWxkKFwidXNlcnNcIik7XG52YXIgb2ZmZXJzUmVmID0gZGIuY2hpbGQoXCJvZmZlcnNcIik7XG5cbi8vIHVzZXJzUmVmLm9uY2UoJ3ZhbHVlJykudGhlbihzbmFwc2hvdCA9PiB7XG4vLyAgIGNvbnNvbGUubG9nKHNuYXBzaG90LnZhbCgpKTtcbi8vIH0pXG5cbi8vIHVzZXJzUmVmLnNldCh7cGFhbGV4OiB7bmFtZTogJ0FsZXgnLCB0ZWxlZ3JhbUlkOiAnQHBhYWxleDUwNSd9fSwgZnVuY3Rpb24oZXJyb3IpIHtcbi8vICAgaWYgKGVycm9yKSB7XG4vLyAgICAgY29uc29sZS5sb2coXCJEYXRhIGNvdWxkIG5vdCBiZSBzYXZlZC5cIiArIGVycm9yKTtcbi8vICAgfSBlbHNlIHtcbi8vICAgICBjb25zb2xlLmxvZyhcIkRhdGEgc2F2ZWQgc3VjY2Vzc2Z1bGx5LlwiKTtcbi8vICAgfVxuLy8gfSk7XG4vLyB1c2Vyc1JlZi51cGRhdGUoe3BhYWxleDoge25hbWU6ICdBbGV4JywgdGVsZWdyYW1JZDogJ0BwYWFsZXg1MDUnfX19XG4vLyBhdG9taWMgdXBkYXRlXG4vLyB1c2Vyc1JlZi51cGRhdGUoe1xuLy8gICBcImFsYW5pc2F3ZXNvbWUvbmlja25hbWVcIjogXCJBbGFuIFRoZSBNYWNoaW5lXCIsXG4vLyAgIFwiZ3JhY2Vob3Avbmlja25hbWVcIjogXCJBbWF6aW5nIEdyYWNlXCJcbi8vIH0pO1xuXG5leHBvcnQgYXN5bmMgZnVuY3Rpb24gc3RvcmVVc2VyKHVzZXIpIHtcbiAgaWYgKCF1c2VyKSB0aHJvdyBuZXcgRXJyb3IoJ25vIHVzZXIgdG8gc2F2ZScpO1xuICBjb25zdCB1c2VyUmVmID0gdXNlcnNSZWYuY2hpbGQodXNlci5pZCk7XG4gIGNvbnN0IHNuYXBzaG90ID0gYXdhaXQgdXNlclJlZi5vbmNlKCd2YWx1ZScpO1xuICBjb25zb2xlLmxvZyhzbmFwc2hvdC52YWwoKSk7XG4gIHJldHVybiBuZXcgUHJvbWlzZSgocmVzLCByZWopID0+IHtcbiAgICBpZiAoIXNuYXBzaG90LnZhbCgpKSB7XG4gICAgICB1c2VyUmVmLnNldCh1c2VyLCBmdW5jdGlvbihlcnJvcikge1xuICAgICAgICBpZiAoZXJyb3IpIHtcbiAgICAgICAgICBjb25zb2xlLmxvZyhcIlVzZXIgY291bGQgbm90IGJlIHNhdmVkLlwiICsgZXJyb3IpO1xuICAgICAgICAgIHJlaihlcnJvcilcbiAgICAgICAgfSBlbHNlIHtcbiAgICAgICAgICBjb25zb2xlLmxvZyhcIlVzZXIgc2F2ZWQgc3VjY2Vzc2Z1bGx5LlwiKTtcbiAgICAgICAgfVxuICAgICAgfSk7XG4gICAgfSBlbHNlIHtcbiAgICAgIHVzZXJSZWYudXBkYXRlKHsuLi51c2VyfSwgZnVuY3Rpb24oZXJyb3IpIHtcbiAgICAgICAgaWYgKGVycm9yKSB7XG4gICAgICAgICAgY29uc29sZS5sb2coXCJVc2VyIGNvdWxkIG5vdCBiZSBzYXZlZC5cIiArIGVycm9yKTtcbiAgICAgICAgICByZWooZXJyb3IpXG4gICAgICAgIH0gZWxzZSB7XG4gICAgICAgICAgY29uc29sZS5sb2coXCJVc2VyIHVwZGF0ZWQgc3VjY2Vzc2Z1bGx5LlwiKTtcblxuICAgICAgICB9XG4gICAgICB9KTtcbiAgICB9XG4gICAgXG4gIH0pXG59XG5cblxuZXhwb3J0IGFzeW5jIGZ1bmN0aW9uIHN0b3JlT2ZmZXIodXNlciwgb2ZmZXIpIHtcbiAgY29uc3Qge2FjdGlvbiwgY2l0eX0gPSBvZmZlcjtcbiAgaWYgKCF1c2VyKSB0aHJvdyBuZXcgRXJyb3IoJ25vIHVzZXIgdG8gc2F2ZScpO1xuICBjb25zdCBvZmZlclBhdGggPSBgb2ZmZXJzLyR7Y2l0eX0vJHthY3Rpb259YDsgIFxuICBjb25zdCB1c2VyT2ZmZXJzUGF0aCA9IGB1c2Vycy8ke3VzZXIuaWR9L29mZmVyc2A7XG4gIGNvbnN0IG9mZmVyVWlkID0gZGIuY2hpbGQob2ZmZXJQYXRoKS5wdXNoKCkua2V5O1xuICBjb25zdCB1c2VyT2ZmZXJQYXRoID0gYCR7dXNlck9mZmVyc1BhdGh9LyR7b2ZmZXJVaWR9YDtcbiAgY29uc3Qgb2ZmZXJQYXRoV2l0aFVpZCA9IGAke29mZmVyUGF0aH0vJHtvZmZlclVpZH1gO1xuICByZXR1cm4gbmV3IFByb21pc2UoKHJlcywgcmVqKSA9PiB7XG4gICAgZGIudXBkYXRlKHtcbiAgICAgIFtvZmZlclBhdGhXaXRoVWlkXTogb2ZmZXIsXG4gICAgICBbdXNlck9mZmVyUGF0aF06IHtjaXR5LCBhY3Rpb259XG4gICAgfSxmdW5jdGlvbihlcnJvcikge1xuICAgICAgaWYgKGVycm9yKSB7XG4gICAgICAgIGNvbnNvbGUubG9nKFwiVXNlciBjb3VsZCBub3QgYmUgc2F2ZWQuXCIgKyBlcnJvcik7XG4gICAgICAgIHJlaihlcnJvcilcbiAgICAgIH0gZWxzZSB7XG4gICAgICAgIGNvbnNvbGUubG9nKFwiVXNlciBzYXZlZCBzdWNjZXNzZnVsbHkuXCIpO1xuICAgICAgfVxuICAgIH0pO1xuICB9KVxufSJdfQ==",
+    "ast": null,
+    "map": {
+      "version": 3,
+      "sources": [
+        "firebaseHelper.js"
+      ],
+      "names": [
+        "user",
+        "Error",
+        "userRef",
+        "usersRef",
+        "child",
+        "id",
+        "once",
+        "snapshot",
+        "console",
+        "log",
+        "val",
+        "Promise",
+        "res",
+        "rej",
+        "set",
+        "error",
+        "update",
+        "storeUser",
+        "offer",
+        "action",
+        "city",
+        "offerPath",
+        "userOffersPath",
+        "offerUid",
+        "db",
+        "push",
+        "key",
+        "userOfferPath",
+        "offerPathWithUid",
+        "storeOffer",
+        "admin",
+        "initializeApp",
+        "credential",
+        "cert",
+        "serviceAccount",
+        "databaseURL",
+        "process",
+        "env",
+        "FIREBASE_DB_URL",
+        "database",
+        "ref",
+        "offersRef"
+      ],
+      "mappings": "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",
+      "file": "firebaseHelper.js",
+      "sourceRoot": "/app/helpers",
+      "sourcesContent": [
+        "import serviceAccount from \"../.data/service-account.json\";\nimport admin from \"firebase-admin\";\n\nadmin.initializeApp({\n  credential: admin.credential.cert(serviceAccount),\n  databaseURL: process.env.FIREBASE_DB_URL\n});\n\nvar db = admin.database().ref('server');\n\nvar usersRef = db.child(\"users\");\nvar offersRef = db.child(\"offers\");\n\n// usersRef.once('value').then(snapshot => {\n//   console.log(snapshot.val());\n// })\n\n// usersRef.set({paalex: {name: 'Alex', telegramId: '@paalex505'}}, function(error) {\n//   if (error) {\n//     console.log(\"Data could not be saved.\" + error);\n//   } else {\n//     console.log(\"Data saved successfully.\");\n//   }\n// });\n// usersRef.update({paalex: {name: 'Alex', telegramId: '@paalex505'}}}\n// atomic update\n// usersRef.update({\n//   \"alanisawesome/nickname\": \"Alan The Machine\",\n//   \"gracehop/nickname\": \"Amazing Grace\"\n// });\n\nexport async function storeUser(user) {\n  if (!user) throw new Error('no user to save');\n  const userRef = usersRef.child(user.id);\n  const snapshot = await userRef.once('value');\n  console.log(snapshot.val());\n  return new Promise((res, rej) => {\n    if (!snapshot.val()) {\n      userRef.set(user, function(error) {\n        if (error) {\n          console.log(\"User could not be saved.\" + error);\n          rej(error)\n        } else {\n          console.log(\"User saved successfully.\");\n        }\n      });\n    } else {\n      userRef.update({...user}, function(error) {\n        if (error) {\n          console.log(\"User could not be saved.\" + error);\n          rej(error)\n        } else {\n          console.log(\"User updated successfully.\");\n\n        }\n      });\n    }\n    \n  })\n}\n\n\nexport async function storeOffer(user, offer) {\n  const {action, city} = offer;\n  if (!user) throw new Error('no user to save');\n  const offerPath = `offers/${city}/${action}`;  \n  const userOffersPath = `users/${user.id}/offers`;\n  const offerUid = db.child(offerPath).push().key;\n  const userOfferPath = `${userOffersPath}/${offerUid}`;\n  const offerPathWithUid = `${offerPath}/${offerUid}`;\n  return new Promise((res, rej) => {\n    db.update({\n      [offerPathWithUid]: offer,\n      [userOfferPath]: {city, action}\n    },function(error) {\n      if (error) {\n        console.log(\"User could not be saved.\" + error);\n        rej(error)\n      } else {\n        console.log(\"User saved successfully.\");\n      }\n    });\n  })\n}"
+      ]
+    },
+    "mtime": 1599541541000
+  }
+}
